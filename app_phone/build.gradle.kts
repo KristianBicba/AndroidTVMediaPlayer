@@ -46,6 +46,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
     implementation(project(":lib_communications"))
     implementation(project(":lib_vfs"))
 

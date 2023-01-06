@@ -1,33 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+    <Button
+        android:id="@+id/dodaj_streznik"
+        android:layout_width="144dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/dodaj_streznik_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dodaj_napravo"
+        app:layout_constraintTop_toTopOf="@+id/dodaj_napravo" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+    <Button
+        android:id="@+id/dodaj_napravo"
+        android:layout_width="144dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="15dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/dodaj_napravo_text"
+        app:layout_constraintBottom_toTopOf="@+id/seznanjene_naprave"
+        app:layout_constraintEnd_toStartOf="@+id/dodaj_streznik"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    <Button
+        android:id="@+id/seznanjene_naprave"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/seznanjene_naprave_text"
+        app:layout_constraintBottom_toTopOf="@+id/seznanjeni_strezniki"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dodaj_napravo" />
 
-    <include layout="@layout/content_main" />
+    <Button
+        android:id="@+id/seznanjeni_strezniki"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/seznanjeni_strezniki_text"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seznanjene_naprave" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="253dp"
+        android:layout_height="316dp"
+        app:layout_constraintBottom_toTopOf="@+id/dodaj_napravo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/video_player_streaming_svgrepo_com" />
+
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Connect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seznanjeni_strezniki" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Streaming App"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

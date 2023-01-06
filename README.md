@@ -1,9 +1,6 @@
-# Look, but don't touch
+# Project structure
 
-Right now, the repository just includes an Android app and a Kotlin library.
-It's nowhere near functional, but both modules contain some code which may be
-useful as a reference.
-
-I'll set up and commit the actual modules (lib_fileserver, lib_communications,
-app_phone, app_tv) later. For now, just use this project to get familiar with
-the build.
+- `/app_phone`: Contains the source files for the Android app that control the TV media player.
+- `/app_tv`: Contains the source files for the Android TV app that receives commands from the phone app and plays media files from a remote server.
+- `/lib_communications`: Contains the library for communicating between the remote control app and the TV.
+- `/lib_vfs`: Contains the library for accessing a remote filesystem.

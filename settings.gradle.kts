@@ -17,4 +17,6 @@ dependencyResolutionManagement {
 }
 
 include(":app_phone")
+include(":app_tv")
 include(":lib_communications")
+include(":lib_vfs")

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -37,6 +38,7 @@ public class QRcode extends AppCompatActivity {
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     List<Device> toBeDeleted = new ArrayList<Device>();
+    private Handler mHandler= new Handler();
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class QRcode extends AppCompatActivity {
                 .allowMainThreadQueries().build();
 
         deviceDao = db.deviceDao();
-        test_fill_devices_db(deviceDao);
+        //test_fill_devices_db(deviceDao);
         List<Device> devices = deviceDao.getAll();
         //deviceDao.delete(device);
         // load data into view
@@ -91,6 +93,12 @@ public class QRcode extends AppCompatActivity {
             public void onClick(View view) {
                 deleteFromDatabase();
                 switchActivities();
+            }
+        });
+        //set focus
+        mHandler.post(new Runnable() {
+            public void run() {
+                deviceListView.requestFocus();
             }
         });
 

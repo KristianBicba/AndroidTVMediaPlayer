@@ -54,7 +54,7 @@ public class QRcode extends AppCompatActivity {
                 .allowMainThreadQueries().build();
 
         deviceDao = db.deviceDao();
-        //test_fill_devices_db(deviceDao);
+        test_fill_devices_db(deviceDao);
         List<Device> devices = deviceDao.getAll();
         //deviceDao.delete(device);
         // load data into view

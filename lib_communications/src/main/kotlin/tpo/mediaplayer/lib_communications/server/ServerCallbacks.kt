@@ -1,56 +1,41 @@
 package tpo.mediaplayer.lib_communications.server
 
-import tpo.mediaplayer.lib_communications.server.data.Client
-import tpo.mediaplayer.lib_communications.server.data.ClientAuth
-
+/**
+ * Functions that get called in an IO thread by the server. Allowed to perform blocking operations, but not CPU
+ * intensive work. This is not the main thread, you shouldn't update the UI from here.
+ */
 interface ServerCallbacks {
     /** Called when the server is started. */
     fun onOpen(server: Server)
 
-    interface PairingRequestCallback {
-        fun accept()
-        fun deny(error: String)
-    }
-
     /**
      * Called when a device has successfully connected and is requesting pairing.
      *
-     * Use the [callback] to accept/deny.
-     * If accepting, the [device][client] should be saved into a database, and allowed to connect when
-     * [onConnectionRequest] is called with its auth data.
+     * Return null to accept, or return an error message to deny.
      */
-    fun onPairingRequest(callback: PairingRequestCallback, client: Client)
-
-    interface ConnectionRequestCallback {
-        fun accept()
-        fun deny(error: String)
-    }
+    fun onPairingRequest(clientName: String, clientGuid: String): String?
 
     /**
      * Called when a device is attempting to connect, and is not attempting to pair.
      *
-     * Use the callback to accept/deny.
+     * Return null to accept, or return an error message to deny.
      */
-    fun onConnectionRequest(callback: ConnectionRequestCallback, clientAuth: ClientAuth)
-
-    interface FileBrowsingCallback {
-        /** Attaches the [callbacks] and begins sending data to the client. */
-        fun begin(callbacks: ServerFileBrowsingCallbacks)
-
-        /** Closes the connection without an error message. */
-        fun close()
-
-        /** Closes the connection with a custom [error] message. */
-        fun close(error: String)
-    }
+    fun onConnectionRequest(clientGuid: String): String?
 
     /**
-     * Called when a client wants to start browsing a remote filesystem accessed by [connectionString].
+     * Called when a client wants to play a file with the URI [connectionString].
      *
-     * Use the [callback] to attach a [ServerFileBrowsingCallbacks] object, which is then called when the client
-     * requests data.
+     * There is no callback, just update the "now playing" with an error or the new value. The client should detect
+     * it and display the remote controls or the error, if there was one.
      */
-    fun onFileBrowsingStart(callback: FileBrowsingCallback, connectionString: String)
+    fun onPlayRequest(connectionString: String)
+
+    // Same as onPlayRequest, just update "now playing".
+
+    fun onPauseRequest()
+    fun onResumeRequest()
+    fun onStopRequest()
+    fun onSeekRequest(newTimeElapsed: ULong) // Milliseconds
 
     /** Called when the server is stopped. Also called if there was an error during startup. */
     fun onClose(error: Throwable?)

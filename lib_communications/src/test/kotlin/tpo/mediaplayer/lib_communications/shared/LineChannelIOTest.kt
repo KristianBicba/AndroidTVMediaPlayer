@@ -1,11 +1,13 @@
 package tpo.mediaplayer.lib_communications.shared
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.Closeable
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
 import kotlin.test.Test
@@ -18,7 +20,7 @@ private data class TestLineChannelIO(
     val outgoingChannel: SendChannel<String>,
     val incomingStream: PipedOutputStream,
     val outgoingStream: ByteArrayOutputStream
-) : Closeable {
+) : AutoCloseable {
     companion object {
         fun fromPipe(): TestLineChannelIO {
             val incoming = Channel<String>(Channel.UNLIMITED)

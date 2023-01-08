@@ -4,11 +4,10 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.runBlocking
-import java.io.Closeable
+import java.io.IOException
 import java.io.InputStream
 import java.io.InterruptedIOException
 import java.io.OutputStream
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 
 class LineChannelIO(
@@ -16,14 +15,18 @@ class LineChannelIO(
     private val outputStream: OutputStream,
     private val incoming: SendChannel<String>,
     private val outgoing: ReceiveChannel<String>
-) : Closeable {
+) : AutoCloseable {
     private var closed = false
 
     private val threadRx = thread {
         try {
             inputStream.bufferedReader().use { reader ->
                 while (true) {
-                    val line = reader.readLine() ?: break
+                    val line = try {
+                        reader.readLine() ?: break
+                    } catch (_: IOException) {
+                        break
+                    }
                     val result = incoming.trySendBlocking(line)
                     if (!result.isSuccess) break
                 }
@@ -42,8 +45,12 @@ class LineChannelIO(
                     val result = runBlocking { outgoing.receiveCatching() }
                     if (!result.isSuccess) break
                     val toWrite = result.getOrNull() ?: break
-                    writer.append("$toWrite\n")
-                    writer.flush()
+                    try {
+                        writer.append("$toWrite\n")
+                        writer.flush()
+                    } catch (_: IOException) {
+                        break
+                    }
                 }
             }
         } catch (_: InterruptedException) {

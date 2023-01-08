@@ -16,7 +16,7 @@ data class NowPlaying(
          * in the connection string, and known to both server and client. */
         val vfsIdentifier: String,
         /** The full path of the media file. */
-        val filePath: VfsPathFile,
+        val filePath: String,
         /** The name of the media file, either embedded or filename. */
         val mediaName: String,
         /** The length of the media file, in milliseconds */

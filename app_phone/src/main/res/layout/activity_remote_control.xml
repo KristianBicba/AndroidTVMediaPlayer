@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonSubtitles"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
     <Button
         android:id="@+id/buttonBack"
@@ -43,7 +43,7 @@
         app:cornerRadius="25dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,8 +84,9 @@
         android:id="@+id/constraintLayout4"
         android:layout_width="403dp"
         android:layout_height="359dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonOptions"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonBack">
 
@@ -211,5 +212,42 @@
             app:layout_constraintEnd_toEndOf="@+id/buttonVolumeUp"
             app:layout_constraintStart_toStartOf="@+id/buttonVolumeUp"
             app:layout_constraintTop_toTopOf="@+id/buttonVolumeUp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="410dp"
+        android:layout_height="82dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOptions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderBar"
+            android:layout_width="366dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#7E7E7E"
+            app:haloColor="#434343"
+            app:layout_constraintBottom_toTopOf="@+id/textViewSlider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbColor="#000000"
+            app:tickColorInactive="#2E2E2E"
+            app:trackColorActive="#878787"
+            app:trackColorInactive="#8E8E8E" />
+
+        <TextView
+            android:id="@+id/textViewSlider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00/00:00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sliderBar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package tpo.mediaplayer.app_phone;
 
+import com.google.android.material.slider.Slider;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,6 +11,7 @@ public class Television {
     public String ip_naslov;
     public String server_name;
     public ArrayList<String> files = new ArrayList<>();
+    public Slider slider;
 
     public String currentMovie = "";
 
@@ -25,6 +28,10 @@ public class Television {
     public String connectToServer(String imeServer){
         this.server_name = imeServer;
         return "Povezano s " + imeServer + ".";
+    }
+
+    public void addSlider(Slider slider) {
+        this.slider = slider;
     }
 
     public boolean isDirectory(String choosen) {
@@ -85,6 +92,11 @@ public class Television {
 
     public void options() {
         System.out.println("options");
+    }
+
+    public void updateSlider() {
+        this.slider.setValue((float) 0.5);
+
     }
 
 }

@@ -1,11 +1,15 @@
 package tpo.mediaplayer.app_phone;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.material.slider.Slider;
 
 public class RemoteControlActivity extends AppCompatActivity {
 
@@ -26,6 +30,9 @@ public class RemoteControlActivity extends AppCompatActivity {
         Button volumeDown =  findViewById(R.id.buttonVolumeDown);
         Button subtitles =  findViewById(R.id.buttonSubtitles);
         Button options =  findViewById(R.id.buttonOptions);
+
+        TextView sliderText = findViewById(R.id.textViewSlider);
+        Slider sliderBar = findViewById(R.id.sliderBar);
 
         Button back = findViewById(R.id.buttonBack);
 
@@ -68,5 +75,16 @@ public class RemoteControlActivity extends AppCompatActivity {
         {
             startActivity(new Intent(RemoteControlActivity.this, FileSystemActivity.class));
         });
+
+        televizija.addSlider(sliderBar);
+
+        sliderBar.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                sliderText.setText(Float.toString(value));
+            }
+        });
+
+        televizija.updateSlider();
     }
 }

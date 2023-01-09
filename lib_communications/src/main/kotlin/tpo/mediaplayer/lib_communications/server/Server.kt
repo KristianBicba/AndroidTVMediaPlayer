@@ -5,20 +5,16 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tpo.mediaplayer.lib_communications.client.ClientMessage
 import tpo.mediaplayer.lib_communications.shared.Constants
 import tpo.mediaplayer.lib_communications.shared.NowPlaying
 import tpo.mediaplayer.lib_communications.shared.PairingData
+import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.net.ServerSocket
 import java.net.Socket
 import kotlin.random.Random
-
-private sealed interface PlayerStatus {
-    data class Playing(val data: NowPlaying) : PlayerStatus
-    data class Error(val error: String) : PlayerStatus
-    object Idle : PlayerStatus
-}
 
 class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
     private val mainLock = Mutex()
@@ -27,7 +23,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
 
     private inner class RunningServer : CoroutineSocketServer<RunningServer.Client>(ServerSocket(Constants.PORT)) {
         private var pairingCode: ByteArray? = null
-        private var status: PlayerStatus = PlayerStatus.Idle
+        private var status: PlaybackStatus = PlaybackStatus.Idle
 
         inner class Client(socket: Socket) : BaseClient(socket) {
             private var isKnown = false
@@ -53,6 +49,8 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             private suspend fun onMessage(message: ClientMessage): Unit = clientLock.withLock {
                 TODO()
             }
+
+            private suspend fun send(message: ServerMessage) = send(Json.encodeToString(message))
         }
 
         override suspend fun onOpen() {

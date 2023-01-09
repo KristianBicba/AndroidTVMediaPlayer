@@ -1,6 +1,6 @@
 package tpo.mediaplayer.lib_communications.client
 
-import tpo.mediaplayer.lib_communications.shared.NowPlaying
+import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 
 /**
  * Functions that get called in an IO thread. Allowed to perform blocking operations, but not CPU intensive work.
@@ -8,14 +8,12 @@ import tpo.mediaplayer.lib_communications.shared.NowPlaying
  */
 interface ClientCallbacks {
     /** Called when the server has sent a new "now playing" update. */
-    fun onUpdateNowPlaying(newValue: NowPlaying)
+    fun onUpdateNowPlaying(newValue: PlaybackStatus)
 
     /**
-     * Called when the server has sent a "now playing" update indicating that playback has stopped, or an error has
-     * occurred ([error] is not null).
+     * Called when the socket was disconnected, or if there was an error during connection establishment.
+     *
+     * Once this function is called, any calls to [Client] have undefined behaviour.
      */
-    fun onPlaybackStop(error: String?)
-
-    /** Called when the socket was disconnected, or if there was an error during connection establishment. */
     fun onClose(error: Throwable?)
 }

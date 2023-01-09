@@ -4,8 +4,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import tpo.mediaplayer.lib_communications.shared.LineChannelIO
+import tpo.mediaplayer.lib_communications.shared.withReentrantLock
 import java.io.Closeable
 import java.io.IOException
 import java.net.ServerSocket
@@ -42,7 +42,7 @@ internal abstract class CoroutineSocketServer<ClientType : CoroutineSocketServer
             }
 
             if (close(true)) { // Connection was closed by the client
-                serverLock.withLock {
+                serverLock.withReentrantLock {
                     @Suppress("UNCHECKED_CAST")
                     _clients -= this@BaseClient as ClientType
                 }
@@ -59,8 +59,8 @@ internal abstract class CoroutineSocketServer<ClientType : CoroutineSocketServer
         protected abstract suspend fun onLine(line: String)
         protected abstract suspend fun onDisconnect(clientDisconnected: Boolean) // with clientLock
 
-        internal suspend fun close(fromEventLoop: Boolean): Boolean = clientLock.withLock {
-            if (isClosed) return@withLock false
+        internal suspend fun close(fromEventLoop: Boolean): Boolean = clientLock.withReentrantLock {
+            if (isClosed) return@withReentrantLock false
             isClosed = true
 
             lineChannelIO.close()
@@ -85,7 +85,7 @@ internal abstract class CoroutineSocketServer<ClientType : CoroutineSocketServer
     }
 
     private suspend fun jobSocketAccept() = coroutineScope {
-        serverLock.withLock {
+        serverLock.withReentrantLock {
             onOpen()
         }
         while (true) {
@@ -105,7 +105,7 @@ internal abstract class CoroutineSocketServer<ClientType : CoroutineSocketServer
             if (socket is Throwable) throw socket
             if (socket !is Socket) continue
 
-            serverLock.withLock {
+            serverLock.withReentrantLock {
                 val client = onConnect(socket)
                 _clients += client
                 launch { client.runEventLoop() }
@@ -123,8 +123,8 @@ internal abstract class CoroutineSocketServer<ClientType : CoroutineSocketServer
     protected abstract suspend fun onClose(error: Throwable?) // with serverLock
     protected abstract suspend fun closeSelf(error: Throwable?) // NO LOCK
 
-    suspend fun closeSuspending(error: Throwable? = null) = serverLock.withLock {
-        if (isClosed) return@withLock
+    suspend fun closeSuspending(error: Throwable? = null) = serverLock.withReentrantLock {
+        if (isClosed) return@withReentrantLock
         isClosed = true
 
         onClose(error)

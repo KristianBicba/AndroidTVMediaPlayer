@@ -8,9 +8,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tpo.mediaplayer.lib_communications.client.ClientMessage
-import tpo.mediaplayer.lib_communications.shared.Constants
-import tpo.mediaplayer.lib_communications.shared.PairingData
-import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
+import tpo.mediaplayer.lib_communications.shared.*
 import java.net.ServerSocket
 import java.net.Socket
 import kotlin.random.Random
@@ -25,7 +23,8 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
         private var status: PlaybackStatus = PlaybackStatus.Idle
 
         inner class Client(socket: Socket) : BaseClient(socket) {
-            private var isKnown = false
+            private var clientStatusView: PlaybackStatus = PlaybackStatus.Idle
+            private var isEstablished = false
 
             override suspend fun onLine(line: String) {
                 println("onLine($line)")
@@ -45,20 +44,130 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                 println("onDisconnect($clientDisconnected)")
             }
 
-            private suspend fun onMessage(message: ClientMessage): Unit = clientLock.withLock {
+            private suspend fun onMessage(message: ClientMessage): Unit = clientLock.withReentrantLock {
                 when (message) {
-                    is ClientMessage.Pair -> TODO()
-                    is ClientMessage.Connect -> TODO()
-                    is ClientMessage.Heartbeat -> TODO()
-                    is ClientMessage.BeginPlayback -> TODO()
-                    is ClientMessage.PausePlayback -> TODO()
-                    is ClientMessage.ResumePlayback -> TODO()
-                    is ClientMessage.StopPlayback -> TODO()
-                    is ClientMessage.SeekPlayback -> TODO()
+                    is ClientMessage.Pair -> {
+                        if (isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        val expectedCode = serverLock.withReentrantLock { pairingCode }
+                        if (expectedCode == null) {
+                            send(ServerMessage.PairingOrConnectionDenied("Server is closed for pairing"))
+                        } else if (!expectedCode.contentEquals(message.pairingCode)) {
+                            send(ServerMessage.PairingOrConnectionDenied("Incorrect pairing code"))
+                        } else {
+                            val error = cbPairingRequest(message.myName, message.myGuid)
+                            if (error != null) {
+                                send(ServerMessage.PairingOrConnectionDenied(error))
+                            } else {
+                                isEstablished = true
+                                send(ServerMessage.PairingAccepted("Android TV"))
+                            }
+                        }
+                    }
+                    is ClientMessage.Connect -> {
+                        if (isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        val error = cbConnectionRequest(message.myGuid)
+                        if (error != null) {
+                            send(ServerMessage.PairingOrConnectionDenied(error))
+                        } else {
+                            isEstablished = true
+                            send(ServerMessage.ConnectionAccepted)
+                            serverLock.withReentrantLock {
+                                sendStatus(status)
+                            }
+                        }
+                    }
+                    is ClientMessage.Heartbeat -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        serverLock.withReentrantLock {
+                            sendStatus(status)
+                        }
+                    }
+                    is ClientMessage.BeginPlayback -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        cbPlayRequest(message.connectionString)
+                    }
+                    is ClientMessage.PausePlayback -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        cbPauseRequest()
+                    }
+                    is ClientMessage.ResumePlayback -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        cbResumeRequest()
+                    }
+                    is ClientMessage.StopPlayback -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        cbStopRequest()
+                    }
+                    is ClientMessage.SeekPlayback -> {
+                        if (!isEstablished) {
+                            println("Unexpected message: $message")
+                            return@withReentrantLock
+                        }
+                        cbSeekRequest(message.newTimeElapsed)
+                    }
                 }
             }
 
             private suspend fun send(message: ServerMessage) = send(Json.encodeToString(message))
+
+            private suspend fun sendStatus(newStatus: PlaybackStatus) {
+                val currentStatusView = clientStatusView
+                val update = if (currentStatusView is PlaybackStatus.Playing &&
+                    newStatus is PlaybackStatus.Playing &&
+                    currentStatusView.data.mediaInfo == newStatus.data.mediaInfo
+                ) {
+                    ServerMessage.UpdateNowPlaying.NowPlayingType.Playing(
+                        null,
+                        newStatus.data.timeElapsed,
+                        newStatus.data.timeUpdated,
+                        newStatus.data.status != NowPlaying.Status.PLAYING
+                    )
+                } else {
+                    when (newStatus) {
+                        is PlaybackStatus.Playing -> ServerMessage.UpdateNowPlaying.NowPlayingType.Playing(
+                            ServerMessage.UpdateNowPlaying.NowPlayingType.Playing.MediaInfo(
+                                newStatus.data.mediaInfo.vfsIdentifier,
+                                newStatus.data.mediaInfo.filePath,
+                                newStatus.data.mediaInfo.mediaName,
+                                newStatus.data.mediaInfo.timeTotal
+                            ),
+                            newStatus.data.timeElapsed,
+                            newStatus.data.timeUpdated,
+                            newStatus.data.status != NowPlaying.Status.PLAYING
+                        )
+                        is PlaybackStatus.Error -> ServerMessage.UpdateNowPlaying.NowPlayingType.Error(newStatus.error)
+                        is PlaybackStatus.Idle -> ServerMessage.UpdateNowPlaying.NowPlayingType.Idle
+                    }
+                }
+                send(ServerMessage.UpdateNowPlaying(update))
+                clientStatusView = newStatus
+            }
+
+            suspend fun updateStatus() = clientLock.withReentrantLock {
+                if (!isEstablished) return@withReentrantLock
+                sendStatus(status)
+            }
         }
 
         override suspend fun onOpen() {
@@ -75,16 +184,24 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             shutDown(error)
         }
 
-        suspend fun pairingBegin(): PairingData? = serverLock.withLock {
+        suspend fun pairingBegin(): PairingData? = serverLock.withReentrantLock {
             pairingCancel()
             val code = Random.nextBytes(6)
-            val addrs = getNetworkAddresses() ?: return@withLock null
+            val addrs = getNetworkAddresses() ?: return@withReentrantLock null
             pairingCode = code
             PairingData(code, addrs)
         }
 
-        suspend fun pairingCancel(): Unit = serverLock.withLock {
+        suspend fun pairingCancel(): Unit = serverLock.withReentrantLock {
             pairingCode = null
+        }
+
+        suspend fun updateNowPlaying(newStatus: PlaybackStatus): Unit = serverLock.withReentrantLock {
+            if (isClosed) return@withReentrantLock
+            status = newStatus
+            for (client in clients) {
+                client.updateStatus()
+            }
         }
     }
 
@@ -149,7 +266,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
 
     /** Updates the "now playing" data with the [newValue]. */
     fun updateNowPlaying(newValue: PlaybackStatus): Unit = withLockLaunch {
-        TODO()
+        server?.updateNowPlaying(newValue)
     }
 
     private suspend fun shutDown(error: Throwable?): Unit = mainLock.withLock {

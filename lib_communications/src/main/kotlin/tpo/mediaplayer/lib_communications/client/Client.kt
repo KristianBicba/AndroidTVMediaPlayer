@@ -16,7 +16,13 @@ import tpo.mediaplayer.lib_communications.shared.NowPlaying
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.io.IOException
 import java.net.InetAddress
+import java.net.InetSocketAddress
 import java.net.Socket
+
+interface ClientPairingResult {
+    data class Success(val tvName: String) : ClientPairingResult
+    data class Error(val error: String) : ClientPairingResult
+}
 
 /**
  * The main class used for connecting to and interacting with the server. All public methods are blocking, so use
@@ -46,7 +52,8 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
 
     init {
         try {
-            socket = Socket(connectionAddress, Constants.PORT)
+            socket = Socket()
+            socket.connect(InetSocketAddress(connectionAddress, Constants.PORT), 1000)
             lineChannelIO = LineChannelIO(
                 socket.getInputStream(), socket.getOutputStream(),
                 incoming, outgoing
@@ -71,7 +78,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
     }
 
     private suspend fun onLine(line: String) {
-        println("onLine($line)")
+        println("Client.onLine($line)")
         val message = try {
             Json.decodeFromString<ServerMessage>(line)
         } catch (e: SerializationException) {
@@ -210,18 +217,18 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
      * Returns null if successful, error message otherwise.
      * [isEstablished] will be true if successful, allowing you to send commands without reconnecting.
      */
-    fun pair(pairingCode: ByteArray, clientName: String, clientGuid: String): String? = runBlocking {
+    fun pair(pairingCode: ByteArray, clientName: String, clientGuid: String): ClientPairingResult = runBlocking {
         val completable = lock.withLock {
             if (isClosed) {
-                return@runBlocking "Connection is closed"
+                return@runBlocking ClientPairingResult.Error("Connection is closed")
             }
 
             if (isEstablished) {
-                return@runBlocking "Connection is already established"
+                return@runBlocking ClientPairingResult.Error("Connection is already established")
             }
 
             if (pairingResult != null || connectionResult != null) {
-                return@runBlocking "Already attempting to establish session"
+                return@runBlocking ClientPairingResult.Error("Already attempting to establish session")
             }
 
             val completable = CompletableDeferred<ServerMessage.IPairing>()
@@ -232,8 +239,8 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
             completable
         }
         when (val result = completable.await()) {
-            is ServerMessage.PairingAccepted -> null
-            is ServerMessage.PairingOrConnectionDenied -> result.error
+            is ServerMessage.PairingAccepted -> ClientPairingResult.Success(result.myName)
+            is ServerMessage.PairingOrConnectionDenied -> ClientPairingResult.Error(result.error)
         }
     }
 

@@ -27,7 +27,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             private var isEstablished = false
 
             override suspend fun onLine(line: String) {
-                println("onLine($line)")
+                println("Server.onLine($line)")
                 val message = try {
                     Json.decodeFromString<ClientMessage>(line)
                 } catch (e: SerializationException) {

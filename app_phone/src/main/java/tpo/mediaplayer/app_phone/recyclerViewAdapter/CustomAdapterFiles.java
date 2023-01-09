@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.recyclerViewAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,14 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.activity.FileSystemActivity;
+import tpo.mediaplayer.app_phone.activity.RemoteControlActivity;
+
 public class CustomAdapterFiles extends RecyclerView.Adapter<CustomAdapterFiles.MyViewHolderFiles>
 {
-    private Context context;
+    private final Context context;
     Activity activity;
-    private ArrayList files;
-    private FileSystemActivity fileSystemActivity;
+    private final ArrayList files;
+    private final FileSystemActivity fileSystemActivity;
 
-    CustomAdapterFiles(Activity activity, Context context, FileSystemActivity fileSystemActivity, ArrayList files)
+    public CustomAdapterFiles(Activity activity, Context context, FileSystemActivity fileSystemActivity,
+                              ArrayList files)
     {
         this.context = context;
         this.files = files;
@@ -46,13 +51,13 @@ public class CustomAdapterFiles extends RecyclerView.Adapter<CustomAdapterFiles.
             @Override
             public void onClick(View v) {
                 String choosen = String.valueOf(files.get(position));
-                if (fileSystemActivity.televizija.isDirectory(choosen)){
-                    fileSystemActivity.televizija.cd(choosen);
+                if (FileSystemActivity.televizija.isDirectory(choosen)){
+                    FileSystemActivity.televizija.cd(choosen);
                     Intent intent = new Intent(context, FileSystemActivity.class);
                     activity.startActivityForResult(intent, 1);
                 } else {
                     System.out.println("film, prestavi na daljinec");
-                    fileSystemActivity.televizija.currentMovie = choosen;
+                    FileSystemActivity.televizija.currentMovie = choosen;
                     Intent intent = new Intent(context, RemoteControlActivity.class);
                     activity.startActivityForResult(intent, 1);
                 }

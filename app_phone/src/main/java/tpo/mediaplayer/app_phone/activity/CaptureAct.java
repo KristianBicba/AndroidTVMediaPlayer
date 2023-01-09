@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 

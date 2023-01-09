@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
 
 public class MainActivity extends AppCompatActivity {
 

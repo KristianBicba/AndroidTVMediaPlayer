@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -62,7 +65,7 @@ public class UpdateActivity extends AppCompatActivity {
 
     }
 
-    void getAndSetIntentData()
+    private void getAndSetIntentData()
     {
         if(getIntent().hasExtra("id") && getIntent().hasExtra("name") && getIntent().hasExtra("info"))
         {
@@ -82,7 +85,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
-    void confirmDialog()
+    private void confirmDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete this device");

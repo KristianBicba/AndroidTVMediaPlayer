@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import tpo.mediaplayer.app_phone.recyclerViewAdapter.CustomAdapterServers;
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
 
 public class SeznanjeniServerji extends AppCompatActivity
 {
@@ -40,7 +44,7 @@ public class SeznanjeniServerji extends AppCompatActivity
         recyclerViewServer.setLayoutManager(new LinearLayoutManager(SeznanjeniServerji.this));
     }
 
-    void storeDataInArrays() {
+    private void storeDataInArrays() {
         Cursor cursor = myDB.readAllDataServer();
         if(cursor.getCount() == 0) {
         } else {

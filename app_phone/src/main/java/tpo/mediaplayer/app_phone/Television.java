@@ -15,7 +15,7 @@ public class Television {
 
     public String currentMovie = "";
 
-    Television(String ime, String ip_naslov) {
+    public Television(String ime, String ip_naslov) {
         this.ime = ime;
         this.ip_naslov = ip_naslov;
         this.files.add("Movies");
@@ -39,14 +39,14 @@ public class Television {
     }
 
     public void cd(String choosen) {
-        ArrayList<String> arr1 = new ArrayList(Arrays.asList(new String[]{"..", "Film1", "Film2", "Serija1"}));
-        ArrayList<String> arr2 = new ArrayList(Arrays.asList(new String[]{"..", "Film1.mkv"}));
-        ArrayList<String> arr3 = new ArrayList(Arrays.asList(new String[]{"..", "Film2.mkv"}));
-        ArrayList<String> arr4 = new ArrayList(Arrays.asList(new String[]{"..", "del1.mkv", "del2.mkv", "del3.mkv", "del4.mkv", "del5.mkv", "del6.mkv", "del7.mkv", "del8.mkv"}));
+        ArrayList<String> arr1 = new ArrayList(Arrays.asList("..", "Film1", "Film2", "Serija1"));
+        ArrayList<String> arr2 = new ArrayList(Arrays.asList("..", "Film1.mkv"));
+        ArrayList<String> arr3 = new ArrayList(Arrays.asList("..", "Film2.mkv"));
+        ArrayList<String> arr4 = new ArrayList(Arrays.asList("..", "del1.mkv", "del2.mkv", "del3.mkv", "del4.mkv", "del5.mkv", "del6.mkv", "del7.mkv", "del8.mkv"));
         switch (choosen) {
             case "..":
                 if (this.files.get(this.files.size()-1).equals("Serija1")) {
-                    this.files = new ArrayList(Arrays.asList(new String[]{"Movies"}));
+                    this.files = new ArrayList(Arrays.asList("Movies"));
                 }
                 else {
                     this.files = arr1;

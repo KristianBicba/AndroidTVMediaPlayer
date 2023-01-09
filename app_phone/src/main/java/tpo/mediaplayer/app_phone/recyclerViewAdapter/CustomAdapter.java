@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.recyclerViewAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,13 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.activity.UpdateActivity;
+
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-    private Context context;
+    private final Context context;
     Activity activity;
-    private ArrayList device_id, device_name, device_info;
+    private final ArrayList device_id;
+    private final ArrayList device_name;
+    private final ArrayList device_info;
 
-    CustomAdapter(Activity activity, Context context, ArrayList device_id, ArrayList device_name, ArrayList device_info) {
+    public CustomAdapter(Activity activity, Context context, ArrayList device_id, ArrayList device_name,
+                   ArrayList device_info) {
         this.activity = activity;
         this.context = context;
         this.device_id = device_id;

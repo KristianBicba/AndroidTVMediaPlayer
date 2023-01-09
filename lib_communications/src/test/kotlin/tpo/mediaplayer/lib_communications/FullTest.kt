@@ -8,7 +8,6 @@ import tpo.mediaplayer.lib_communications.client.ClientCallbacks
 import tpo.mediaplayer.lib_communications.client.ClientPairingHelper
 import tpo.mediaplayer.lib_communications.server.Server
 import tpo.mediaplayer.lib_communications.server.ServerCallbacks
-import tpo.mediaplayer.lib_communications.server.getNetworkAddresses
 import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.net.InetAddress

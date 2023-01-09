@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,9 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
 
 public class AddServer extends AppCompatActivity {
 

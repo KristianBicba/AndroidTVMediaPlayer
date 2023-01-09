@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import tpo.mediaplayer.app_phone.recyclerViewAdapter.CustomAdapter;
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
 
 public class SeznanjeneNaprave extends AppCompatActivity
 {
@@ -72,7 +76,7 @@ public class SeznanjeneNaprave extends AppCompatActivity
         }
     }
 
-    void storeDataInArrays() {
+    public void storeDataInArrays() {
         Cursor cursor = myDB.readAllData();
         if(cursor.getCount() == 0) {
             empty_image.setVisibility(View.VISIBLE);

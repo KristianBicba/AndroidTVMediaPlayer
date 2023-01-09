@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import java.util.HashMap;
+
+import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.Television;
 
 public class ConnectActivity extends AppCompatActivity {
 
@@ -47,12 +51,12 @@ public class ConnectActivity extends AppCompatActivity {
         String[] devices = myDB.getDevices();
         String[] servers = myDB.getServers();
 
-        Spinner spin1 = (Spinner) findViewById(R.id.spinnerDevice);
+        Spinner spin1 = findViewById(R.id.spinnerDevice);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, devices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin1.setAdapter(adapter);
 
-        Spinner spin2 = (Spinner) findViewById(R.id.spinnerServer);
+        Spinner spin2 = findViewById(R.id.spinnerServer);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servers);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin2.setAdapter(adapter2);

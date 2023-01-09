@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private Context context;
+    private final Context context;
     private static final String DATABASE_NAME = "Servers.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_PATH = "path";
 
-    DBHelper(@Nullable Context context) {
+    public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -60,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addDevice(String name, String info) {
+    public void addDevice(String name, String info) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -74,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    void addServer(String username, String password, String path) {
+    public void addServer(String username, String password, String path) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -91,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    Cursor readAllData() {
+    public Cursor readAllData() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -102,7 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    Cursor readAllDataServer() {
+    public Cursor readAllDataServer() {
         String query = "SELECT * FROM " + TABLE_NAME1;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -113,7 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void updateData(String row_id, String name, String info)
+    public void updateData(String row_id, String name, String info)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -130,7 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    void updateDataServer(String row_id, String username, String password, String path)
+    public void updateDataServer(String row_id, String username, String password, String path)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -148,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    void deleteOneRow(String row_id)
+    public void deleteOneRow(String row_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, "device_id=?", new String[]{row_id});
@@ -161,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    void deleteOneRowServer(String row_id)
+    public void deleteOneRowServer(String row_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, "server_id=?", new String[]{row_id});
@@ -174,7 +174,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    String[] getDevices()
+    public String[] getDevices()
     {
         String query = "SELECT device_name FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -198,7 +198,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return devices1;
     }
 
-    String[] getServers()
+    public String[] getServers()
     {
         String query = "SELECT username FROM " + TABLE_NAME1;
         SQLiteDatabase db = this.getReadableDatabase();

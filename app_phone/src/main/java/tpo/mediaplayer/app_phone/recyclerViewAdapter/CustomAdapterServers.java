@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.recyclerViewAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,14 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.activity.UpdateActivity;
+
 public class CustomAdapterServers extends RecyclerView.Adapter<CustomAdapterServers.MyViewHolderServers>
 {
-    private Context context;
+    private final Context context;
     Activity activity;
-    private ArrayList server_id, username, path;
+    private final ArrayList server_id;
+    private final ArrayList username;
+    private final ArrayList path;
 
 
-    CustomAdapterServers(Activity activity, Context context, ArrayList server_id, ArrayList username, ArrayList path)
+    public CustomAdapterServers(Activity activity, Context context, ArrayList server_id, ArrayList username,
+                             ArrayList path)
     {
         this.context = context;
         this.server_id = server_id;

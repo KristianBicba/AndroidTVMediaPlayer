@@ -288,7 +288,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
      * Requests playback of a file described by [connectionString].
      *
      * Returns immediately, once the server sends a response a callback will be called
-     * (one of [ClientCallbacks.onUpdateNowPlaying] or [ClientCallbacks.onPlaybackStop]).
+     * ([ClientCallbacks.onUpdateNowPlaying]).
      */
     fun beginPlayback(connectionString: String) = withLockLaunchEstablished {
         send(ClientMessage.BeginPlayback(connectionString))

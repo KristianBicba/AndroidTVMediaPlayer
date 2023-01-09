@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +13,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import tpo.mediaplayer.app_phone.recyclerViewAdapter.CustomAdapterFiles;
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.Television;
+
 public class FileSystemActivity extends AppCompatActivity {
 
-    static Television televizija = ConnectActivity.getTelevision();
-    RecyclerView recyclerViewFiles;
-    CustomAdapterFiles customAdapterFiles;
+    public static Television televizija = ConnectActivity.getTelevision();
+    private RecyclerView recyclerViewFiles;
+    private CustomAdapterFiles customAdapterFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

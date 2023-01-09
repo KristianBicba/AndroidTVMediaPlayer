@@ -17,43 +17,43 @@
         android:theme="@style/Theme.TPOapp"
         tools:targetApi="31">
         <activity
-            android:name=".RemoteControlActivity"
+            android:name=".activity.RemoteControlActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".FileSystemActivity"
+            android:name=".activity.FileSystemActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ConnectActivity"
+            android:name=".activity.ConnectActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddServer"
+            android:name=".activity.AddServer"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".UpdateActivity"
+            android:name=".activity.UpdateActivity"
             android:exported="false"
-            android:parentActivityName=".SeznanjeneNaprave">
+            android:parentActivityName=".activity.SeznanjeneNaprave">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,18 +66,18 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".CaptureAct"
+            android:name=".activity.CaptureAct"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
         <activity
-            android:name=".SeznanjeneNaprave"
-            android:parentActivityName=".MainActivity"
+            android:name=".activity.SeznanjeneNaprave"
+            android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true" />
         <activity
-            android:name=".SeznanjeniServerji"
-            android:parentActivityName=".MainActivity"
+            android:name=".activity.SeznanjeniServerji"
+            android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true" />
 

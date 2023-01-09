@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_phone;
+package tpo.mediaplayer.app_phone.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
+
+import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.Television;
 
 public class RemoteControlActivity extends AppCompatActivity {
 

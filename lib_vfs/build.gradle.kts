@@ -15,7 +15,7 @@ tasks.test {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
-    implementation("com.jcraft:jsch:0.1.55")
+    implementation("com.hierynomus:sshj:0.32.0")
 
     testImplementation(kotlin("test"))
 }

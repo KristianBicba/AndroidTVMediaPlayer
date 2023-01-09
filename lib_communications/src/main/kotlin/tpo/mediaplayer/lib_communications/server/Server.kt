@@ -9,7 +9,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import tpo.mediaplayer.lib_communications.client.ClientMessage
 import tpo.mediaplayer.lib_communications.shared.Constants
-import tpo.mediaplayer.lib_communications.shared.NowPlaying
 import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.net.ServerSocket
@@ -47,7 +46,16 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             }
 
             private suspend fun onMessage(message: ClientMessage): Unit = clientLock.withLock {
-                TODO()
+                when (message) {
+                    is ClientMessage.Pair -> TODO()
+                    is ClientMessage.Connect -> TODO()
+                    is ClientMessage.Heartbeat -> TODO()
+                    is ClientMessage.BeginPlayback -> TODO()
+                    is ClientMessage.PausePlayback -> TODO()
+                    is ClientMessage.ResumePlayback -> TODO()
+                    is ClientMessage.StopPlayback -> TODO()
+                    is ClientMessage.SeekPlayback -> TODO()
+                }
             }
 
             private suspend fun send(message: ServerMessage) = send(Json.encodeToString(message))
@@ -139,13 +147,8 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
         server?.pairingCancel()
     }
 
-    /** Updates the "now playing" data with the [newValue], or null to signal the playback has stopped. */
-    fun updateNowPlaying(newValue: NowPlaying?): Unit = withLockLaunch {
-        TODO()
-    }
-
-    /** Updates the "now playing" data with an [error] value. */
-    fun updateNowPlayingError(error: String): Unit = withLockLaunch {
+    /** Updates the "now playing" data with the [newValue]. */
+    fun updateNowPlaying(newValue: PlaybackStatus): Unit = withLockLaunch {
         TODO()
     }
 

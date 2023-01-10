@@ -10,6 +10,7 @@ import tpo.mediaplayer.lib_communications.server.Server
 import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
+import java.net.Inet4Address
 import java.net.InetAddress
 import kotlin.test.Test
 import kotlin.test.fail
@@ -45,7 +46,7 @@ private interface ServerCallbacksPrinting : ServerCallbacks {
         println("server.onStopRequest")
     }
 
-    override fun onSeekRequest(newTimeElapsed: ULong) {
+    override fun onSeekRequest(newTimeElapsed: Long) {
         println("server.onSeekRequest($newTimeElapsed)")
     }
 
@@ -135,5 +136,12 @@ internal class FullTest {
         }
 
         s.close()
+    }
+
+    @Test
+    fun helperPlayMediaOnRealTV(): Unit = runBlocking {
+        val client = Client(object : ClientCallbacksPrinting {}, InetAddress.getLoopbackAddress())
+        if (client.establish("hahaha") != null) fail("Failed to establish connection")
+        client.beginPlayback("sftp://testuser:testpassword@10.0.2.2:2022/Screen.mp4")
     }
 }

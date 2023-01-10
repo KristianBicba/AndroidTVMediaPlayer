@@ -27,9 +27,9 @@ internal class SharedMessageTest {
                         "smb://testuser@10.0.2.2",
                         "/movies/2022/A Movie/A Movie-x264.mkv",
                         "A Movie",
-                        1000uL * 60uL * 120uL
+                        1000 * 60 * 120
                     ),
-                    1000uL,
+                    1000,
                     Instant.ofEpochSecond(1673211080, 421_000_000),
                     false
                 )

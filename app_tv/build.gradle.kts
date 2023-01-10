@@ -49,6 +49,7 @@ dependencies {
     implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     implementation("com.google.android.exoplayer:exoplayer:2.18.2")
 
@@ -58,10 +59,14 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     testImplementation("androidx.room:room-testing:$roomVersion")
 
+    val lifecycleVersion = "2.5.1"
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
+
     // Do not update
     implementation("androidmads.library.qrgenearator:QRGenearator:1.0.3")
 
-    implementation("com.jcraft:jsch:0.1.55")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.69")
 
     implementation(project(":lib_communications"))
     implementation(project(":lib_vfs"))

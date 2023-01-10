@@ -1,6 +1,12 @@
-package tpo.mediaplayer.app_tv;
+package tpo.mediaplayer.app_tv.activity;
 
-import tpo.mediaplayer.lib_communications.server.*;
+import tpo.mediaplayer.app_tv.AppDatabase;
+import tpo.mediaplayer.app_tv.Device;
+import tpo.mediaplayer.app_tv.DeviceDao;
+import tpo.mediaplayer.app_tv.DeviceListAdapter;
+import tpo.mediaplayer.app_tv.R;
+import tpo.mediaplayer.app_tv.activity.VideoPlayer;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -14,17 +20,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.zxing.WriterException;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.List;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
-import tpo.mediaplayer.lib_communications.shared.PairingData;
+import tpo.mediaplayer.app_tv.service.VideoPlayerLauncherService;
 
 
 //this is dumb but
@@ -50,73 +51,18 @@ public class QRcode extends AppCompatActivity {
     QRGEncoder qrgEncoder;
     List<Device> toBeDeleted = new ArrayList<Device>();
     private Handler mHandler= new Handler();
-    Server server;
-
-
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_code);
+
+        Intent intent = new Intent(this, VideoPlayerLauncherService.class);
+        startService(intent);
+
         qrCodeIV = findViewById(R.id.idIVQrcode);
         textView = findViewById(R.id.iddeviceName);
         buttonNext = findViewById(R.id.idbutton);
         deviceListView = findViewById(R.id.iddevicelist);
-
-        // start comunication server
-        server = new Server(new ServerCallbacks() {
-            @Override
-            public void onOpen(@NonNull Server server) {
-
-            }
-
-            @Nullable
-            @Override
-            public String onPairingRequest(@NonNull String clientName, @NonNull String clientGuid) {
-                Toast.makeText(getApplicationContext(),"Pairing", Toast.LENGTH_LONG).show();
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public String onConnectionRequest(@NonNull String clientGuid) {
-                Toast.makeText(getApplicationContext(),"Conected", Toast.LENGTH_LONG).show();
-                return null;
-            }
-
-            @Override
-            public void onPlayRequest(@NonNull String connectionString) {
-
-            }
-
-            @Override
-            public void onPauseRequest() {
-
-            }
-
-            @Override
-            public void onResumeRequest() {
-
-            }
-
-            @Override
-            public void onStopRequest() {
-
-            }
-
-            @Override
-            public void onSeekRequest(long newTimeElapsed) {
-
-            }
-
-            @Override
-            public void onClose(@Nullable Throwable error) {
-
-            }
-        });
-
-        server.open();
-
 
 
         // open databese and load data
@@ -135,12 +81,9 @@ public class QRcode extends AppCompatActivity {
 
 
 
-        //generate string for connection
-        PairingData pairingData = server.beginPairing();
-
-
         String deviceName = Settings.Global.getString(getContentResolver(), "device_name");
-        String connectionString = pairingData.toString(); //display the name of the tv
+//        String connectionString = pairingData.toString(); //display the name of the tv
+        String connectionString = "example example example"; //display the name of the tv
 
 
         // generate QRcode and desplay it

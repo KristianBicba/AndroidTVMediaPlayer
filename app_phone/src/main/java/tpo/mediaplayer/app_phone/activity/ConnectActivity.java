@@ -1,7 +1,5 @@
 package tpo.mediaplayer.app_phone.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,9 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 
 import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.GodObject;
+import tpo.mediaplayer.app_phone.HexUtilKt;
 import tpo.mediaplayer.app_phone.R;
 import tpo.mediaplayer.app_phone.Television;
 
@@ -22,7 +26,7 @@ public class ConnectActivity extends AppCompatActivity {
     Button connect;
     public static Television televizija;
 
-    public static Television getTelevision(){
+    public static Television getTelevision() {
         return televizija;
     }
 
@@ -32,17 +36,26 @@ public class ConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect);
 
         HashMap<String, Television> televizije = new HashMap<String, Television>();
+        HashMap<String, InetAddress> serverIps = new HashMap<>();
 
         myDB = new DBHelper(ConnectActivity.this);
 
         Cursor cursor = myDB.readAllData();
-        if(cursor.getCount() == 0) {
+        if (cursor.getCount() == 0) {
         } else {
             while (cursor.moveToNext()) {
                 String ime = cursor.getString(1);
                 String ip = cursor.getString(2);
 
-                televizije.put(ime, new Television(ime, ip));
+                byte[] addrBytes = HexUtilKt.hexDecode(ip);
+                if (addrBytes == null) continue;
+                try {
+                    InetAddress address = InetAddress.getByAddress(addrBytes);
+                    serverIps.put(ime, address);
+                } catch (IOException fuckyou) {
+                }
+
+//                televizije.put(ime, new Television(ime, ip));
             }
         }
 
@@ -64,9 +77,15 @@ public class ConnectActivity extends AppCompatActivity {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                televizija = televizije.get(spin1.getSelectedItem().toString());
-                System.out.println(televizija.connect());
-                System.out.println(televizija.connectToServer(spin2.getSelectedItem().toString()));
+                InetAddress address = serverIps.get(spin1.getSelectedItem().toString());
+                String connString = spin2.getSelectedItem().toString();
+
+                GodObject.INSTANCE.setSession(new GodObject.BrowsingSession(
+                        address,
+                        connString,
+                        "/"
+                ));
+
                 startActivity(new Intent(ConnectActivity.this, FileSystemActivity.class));
             }
         });

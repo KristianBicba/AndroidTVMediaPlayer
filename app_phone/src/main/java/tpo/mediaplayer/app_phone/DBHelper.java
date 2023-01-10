@@ -200,7 +200,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String[] getServers()
     {
-        String query = "SELECT username FROM " + TABLE_NAME1;
+        String query = "SELECT path FROM " + TABLE_NAME1;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;

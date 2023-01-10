@@ -1,17 +1,14 @@
 package tpo.mediaplayer.app_tv.activity;
 
-import tpo.mediaplayer.app_tv.AppDatabase;
-import tpo.mediaplayer.app_tv.Device;
-import tpo.mediaplayer.app_tv.DeviceDao;
-import tpo.mediaplayer.app_tv.DeviceListAdapter;
-import tpo.mediaplayer.app_tv.R;
-import tpo.mediaplayer.app_tv.activity.VideoPlayer;
-
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -24,7 +21,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.google.zxing.WriterException;
 
@@ -33,6 +29,14 @@ import java.util.List;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import tpo.mediaplayer.app_tv.AppDatabase;
+import tpo.mediaplayer.app_tv.Device;
+import tpo.mediaplayer.app_tv.DeviceDao;
+import tpo.mediaplayer.app_tv.DeviceListAdapter;
+import tpo.mediaplayer.app_tv.GodObject;
+import tpo.mediaplayer.app_tv.HexUtilKt;
+import tpo.mediaplayer.app_tv.R;
+import tpo.mediaplayer.app_tv.service.MainServerService;
 import tpo.mediaplayer.app_tv.service.VideoPlayerLauncherService;
 
 
@@ -50,7 +54,26 @@ public class QRcode extends AppCompatActivity {
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     List<Device> toBeDeleted = new ArrayList<Device>();
-    private Handler mHandler= new Handler();
+    private Handler mHandler = new Handler();
+
+    private MainServerService.LocalBinder binder = null;
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (MainServerService.LocalBinder) service;
+            byte[] pairingData = binder.setPairing(true);
+            if (pairingData != null) {
+                String hexPairingData = HexUtilKt.hexEncode(pairingData);
+                createQRcode(hexPairingData);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            binder.setPairing(false);
+            binder = null;
+        }
+    };
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +82,9 @@ public class QRcode extends AppCompatActivity {
         Intent intent = new Intent(this, VideoPlayerLauncherService.class);
         startService(intent);
 
+        Intent bindIntent = new Intent(this, MainServerService.class);
+        bindService(bindIntent, connection, Context.BIND_AUTO_CREATE);
+
         qrCodeIV = findViewById(R.id.idIVQrcode);
         textView = findViewById(R.id.iddeviceName);
         buttonNext = findViewById(R.id.idbutton);
@@ -66,9 +92,7 @@ public class QRcode extends AppCompatActivity {
 
 
         // open databese and load data
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "device-database")
-                .allowMainThreadQueries().build();
+        AppDatabase db = GodObject.INSTANCE.getDb();
 
         deviceDao = db.deviceDao();
         test_fill_devices_db(deviceDao);
@@ -80,29 +104,18 @@ public class QRcode extends AppCompatActivity {
         loadIntoView(devices);
 
 
-
         String deviceName = Settings.Global.getString(getContentResolver(), "device_name");
 //        String connectionString = pairingData.toString(); //display the name of the tv
-        String connectionString = "example example example"; //display the name of the tv
+//        String connectionString = "example example example";
 
 
         // generate QRcode and desplay it
 
         textView.setText(deviceName);
-        createQRcode(connectionString);
-
-
+//        createQRcode(connectionString);
 
 
         // start video player
-
-
-
-
-
-
-
-
 
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -122,12 +135,7 @@ public class QRcode extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-    private void createQRcode(String connectionString){
+    private void createQRcode(String connectionString) {
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
@@ -145,8 +153,9 @@ public class QRcode extends AppCompatActivity {
             Log.e("Tag", e.toString());
         }
     }
-    private void loadIntoView(List<Device> devices){
-        Device [] devicelist = new Device[devices.size()];
+
+    private void loadIntoView(List<Device> devices) {
+        Device[] devicelist = new Device[devices.size()];
         for (int i = 0; i < devices.size(); i++) {
             devicelist[i] = devices.get(i);
         }
@@ -160,8 +169,9 @@ public class QRcode extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, VideoPlayer.class);
         startActivity(switchActivityIntent);
     }
-    private void deleteFromDatabase(){
-        if(toBeDeleted.size() < 1)
+
+    private void deleteFromDatabase() {
+        if (toBeDeleted.size() < 1)
             return;
         for (int i = 0; i < toBeDeleted.size(); i++) {
             deviceDao.delete(toBeDeleted.get(i));
@@ -169,8 +179,8 @@ public class QRcode extends AppCompatActivity {
 
     }
 
-    private void test_fill_devices_db(DeviceDao deviceDao){
-        if(deviceDao.getAll().size() == 0){
+    private void test_fill_devices_db(DeviceDao deviceDao) {
+        if (deviceDao.getAll().size() == 0) {
             for (int i = 0; i < 10; i++) {
                 Device device = new Device();
                 device.deviceName = "test" + i;
@@ -178,5 +188,11 @@ public class QRcode extends AppCompatActivity {
                 deviceDao.insert(device);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
     }
 }

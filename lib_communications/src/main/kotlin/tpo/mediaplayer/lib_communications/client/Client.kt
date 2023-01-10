@@ -43,6 +43,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
     private val incoming = Channel<String>(Channel.UNLIMITED)
     private val outgoing = Channel<String>(Channel.UNLIMITED)
     private val lineChannelIO: LineChannelIO
+    private var lineChannelIOInitialized = false
     private val socket: Socket
 
     private var connectionResult: CompletableDeferred<ServerMessage.IConnect>? = null
@@ -58,6 +59,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
                 socket.getInputStream(), socket.getOutputStream(),
                 incoming, outgoing
             )
+            lineChannelIOInitialized = true
         } catch (e: IOException) {
             runBlocking {
                 closeSuspending(e)
@@ -182,7 +184,8 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
         outgoing.close()
         withContext(Dispatchers.IO) {
             try {
-                lineChannelIO.close()
+                if (lineChannelIOInitialized)
+                    lineChannelIO.close()
                 socket.close()
             } catch (_: IOException) {
             }

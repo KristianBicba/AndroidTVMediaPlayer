@@ -6,6 +6,8 @@ import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import tpo.mediaplayer.app_tv.Device
+import tpo.mediaplayer.app_tv.GodObject
 import tpo.mediaplayer.lib_communications.server.Server
 import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
@@ -28,6 +30,16 @@ class MainServerService : Service() {
             }
             server.updateNowPlaying(playbackStatus)
         }
+
+        fun setPairing(allowPairing: Boolean): ByteArray? {
+            if (!allowPairing) {
+                server.cancelPairing()
+                return null
+            } else {
+                val pairingData = server.beginPairing() ?: return null
+                return pairingData.toByteArray()
+            }
+        }
     }
 
     private val binder = LocalBinder()
@@ -38,11 +50,27 @@ class MainServerService : Service() {
         }
 
         override fun onPairingRequest(clientName: String, clientGuid: String): String? {
-            return null
+            val dao = GodObject.INSTANCE.db.deviceDao() ?: return "Unable to get DAO"
+            if (dao.getByGuid(clientGuid) != null) {
+                return "GUID is already paired"
+            } else {
+                dao.insert(Device().apply {
+                    deviceName = clientName
+                    communicationStr = clientGuid
+                })
+                return null
+            }
         }
 
         override fun onConnectionRequest(clientGuid: String): String? {
-            return null
+            if (clientGuid == "test") return null // Allow test code to interact with the server
+
+            val dao = GodObject.INSTANCE.db.deviceDao() ?: return "Unable to get DAO"
+            if (dao.getByGuid(clientGuid) == null) {
+                return "Unknown device GUID"
+            } else {
+                return null
+            }
         }
 
         override fun onPlayRequest(connectionString: String) {

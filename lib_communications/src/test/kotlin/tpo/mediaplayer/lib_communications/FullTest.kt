@@ -11,7 +11,6 @@ import tpo.mediaplayer.lib_communications.server.Server
 import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
-import java.net.Inet4Address
 import java.net.InetAddress
 import kotlin.test.Test
 import kotlin.test.fail
@@ -141,7 +140,7 @@ internal class FullTest {
 
     private fun getClient(): Client {
         val client = Client(object : ClientCallbacksPrinting {}, InetAddress.getLoopbackAddress())
-        if (client.establish("hahaha") != null) fail("Failed to establish connection")
+        if (client.establish("test") != null) fail("Failed to establish connection")
         return client
     }
 

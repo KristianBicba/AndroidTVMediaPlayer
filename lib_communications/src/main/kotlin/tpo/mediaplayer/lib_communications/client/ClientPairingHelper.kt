@@ -7,9 +7,10 @@ import java.net.InetAddress
 
 class ClientPairingHelper private constructor(val address: InetAddress, val name: String) {
     companion object {
+        @JvmStatic
         fun attemptToPair(pairingData: PairingData, myName: String, myGuid: String): ClientPairingHelper? {
             for (addr in pairingData.addrs) {
-                lateinit var client: Client
+                var client: Client? = null
                 try {
                     client = Client(object : ClientCallbacks {
                         override fun onUpdateNowPlaying(newValue: PlaybackStatus) {}
@@ -21,7 +22,7 @@ class ClientPairingHelper private constructor(val address: InetAddress, val name
                     }
                 } catch (_: IOException) {
                 } finally {
-                    client.close()
+                    client?.close()
                 }
             }
             return null

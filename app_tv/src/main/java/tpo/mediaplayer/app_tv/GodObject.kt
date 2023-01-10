@@ -1,11 +1,15 @@
 package tpo.mediaplayer.app_tv
 
 import android.app.Application
+import androidx.room.Room
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 
 
 class GodObject : Application() {
+    lateinit var db: AppDatabase
+        private set
+
     private fun setupBouncyCastle() {
         val provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)
             ?: // Web3j will set up the provider lazily when it's first used.
@@ -22,8 +26,21 @@ class GodObject : Application() {
         Security.insertProviderAt(BouncyCastleProvider(), 1)
     }
 
+    private fun setupDatabase() {
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "device-database"
+        ).allowMainThreadQueries().build()
+    }
+
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         setupBouncyCastle()
+        setupDatabase()
+    }
+
+    companion object {
+        lateinit var INSTANCE: GodObject
     }
 }

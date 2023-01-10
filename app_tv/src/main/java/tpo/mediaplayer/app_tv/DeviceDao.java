@@ -12,6 +12,9 @@ public interface DeviceDao {
     @Query("SELECT * FROM device")
     List<Device> getAll();
 
+    @Query("SELECT * FROM device WHERE communication_str = :id")
+    Device getByGuid(String id);
+
     @Insert
     void insert(Device device);
 

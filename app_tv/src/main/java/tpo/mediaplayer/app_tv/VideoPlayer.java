@@ -14,19 +14,17 @@ import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 public class VideoPlayer extends AppCompatActivity {
 
-
-    private ExoPlayer player;
     StyledPlayerView playerView;
-
+    ExoPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_player);
         playerView = findViewById(R.id.idExoPlayerVIew);
+        player = new ExoPlayer.Builder(this).build();
 
-        Context context = this;
-        player = new ExoPlayer.Builder(context).build();
+
         playerView.setPlayer(player);
 
 

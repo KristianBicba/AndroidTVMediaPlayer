@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.google.android.material.slider.Slider;
 
 import tpo.mediaplayer.app_phone.R;
 import tpo.mediaplayer.app_phone.Television;
+import tpo.mediaplayer.lib_communications.client.Client;
 
 public class RemoteControlActivity extends AppCompatActivity {
 
@@ -82,6 +84,7 @@ public class RemoteControlActivity extends AppCompatActivity {
         televizija.addSlider(sliderBar);
 
         sliderBar.addOnChangeListener(new Slider.OnChangeListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 sliderText.setText(Float.toString(value));
@@ -89,5 +92,6 @@ public class RemoteControlActivity extends AppCompatActivity {
         });
 
         televizija.updateSlider();
+
     }
 }

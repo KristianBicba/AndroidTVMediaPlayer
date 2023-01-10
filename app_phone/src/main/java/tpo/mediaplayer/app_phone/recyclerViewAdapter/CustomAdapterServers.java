@@ -1,5 +1,6 @@
 package tpo.mediaplayer.app_phone.recyclerViewAdapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +47,7 @@ public class CustomAdapterServers extends RecyclerView.Adapter<CustomAdapterServ
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolderServers holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderServers holder, @SuppressLint("RecyclerView") int position) {
         holder.server_id.setText(String.valueOf(server_id.get(position)));
         holder.username.setText(String.valueOf(username.get(position)));
         holder.path.setText(String.valueOf(path.get(position)));

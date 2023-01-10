@@ -96,7 +96,6 @@ public class Television {
 
     public void updateSlider() {
         this.slider.setValue((float) 0.5);
-
     }
 
 }

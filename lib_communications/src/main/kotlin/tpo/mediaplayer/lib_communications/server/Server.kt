@@ -220,7 +220,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
     private suspend inline fun cbPauseRequest() = io { callbacks.onPauseRequest() }
     private suspend inline fun cbResumeRequest() = io { callbacks.onResumeRequest() }
     private suspend inline fun cbStopRequest() = io { callbacks.onStopRequest() }
-    private suspend inline fun cbSeekRequest(newTimeElapsed: ULong) = io { callbacks.onSeekRequest(newTimeElapsed) }
+    private suspend inline fun cbSeekRequest(newTimeElapsed: Long) = io { callbacks.onSeekRequest(newTimeElapsed) }
     private suspend inline fun cbClose(error: Throwable?) = io { callbacks.onClose(error) }
 
     private inline fun <T> withLockBlocking(

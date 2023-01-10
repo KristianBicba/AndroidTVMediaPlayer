@@ -32,7 +32,7 @@ sealed interface ServerMessage {
             @SerialName("Playing")
             data class Playing(
                 val mediaInfo: MediaInfo?,
-                val timeElapsed: ULong,
+                val timeElapsed: Long,
                 @Serializable(with = InstantAsTimespecSerializer::class)
                 val timeUpdated: Instant,
                 val isPaused: Boolean
@@ -42,7 +42,7 @@ sealed interface ServerMessage {
                     val vfsIdentifier: String,
                     val filePath: String,
                     val mediaName: String,
-                    val timeTotal: ULong,
+                    val timeTotal: Long,
                 )
             }
 

@@ -5,7 +5,7 @@ import java.time.Instant
 data class NowPlaying(
     val mediaInfo: MediaInfo,
     /** Number of elapsed milliseconds since the start of the file */
-    val timeElapsed: ULong,
+    val timeElapsed: Long,
     /** The timestamp when this data was last updated */
     val timeUpdated: Instant,
     val status: Status
@@ -20,7 +20,7 @@ data class NowPlaying(
         /** The name of the media file, either embedded or filename. */
         val mediaName: String,
         /** The length of the media file, in milliseconds */
-        val timeTotal: ULong,
+        val timeTotal: Long,
     )
 
     enum class Status {

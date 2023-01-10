@@ -63,5 +63,5 @@ sealed interface ClientMessage {
 
     @Serializable
     @SerialName("SeekPlayback")
-    data class SeekPlayback(val newTimeElapsed: ULong) : IEstablished
+    data class SeekPlayback(val newTimeElapsed: Long) : IEstablished
 }

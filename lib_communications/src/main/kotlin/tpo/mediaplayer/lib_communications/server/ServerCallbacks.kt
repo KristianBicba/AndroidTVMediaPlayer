@@ -35,7 +35,7 @@ interface ServerCallbacks {
     fun onPauseRequest()
     fun onResumeRequest()
     fun onStopRequest()
-    fun onSeekRequest(newTimeElapsed: ULong) // Milliseconds
+    fun onSeekRequest(newTimeElapsed: Long) // Milliseconds
 
     /** Called when the server is stopped. Also called if there was an error during startup. */
     fun onClose(error: Throwable?)

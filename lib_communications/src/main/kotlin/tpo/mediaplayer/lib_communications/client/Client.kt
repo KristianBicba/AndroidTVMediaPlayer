@@ -298,7 +298,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
     fun resumePlayback() = withLockLaunchEstablished { send(ClientMessage.ResumePlayback) }
     fun stopPlayback() = withLockLaunchEstablished { send(ClientMessage.StopPlayback) }
 
-    fun seekPlayback(newTimeElapsed: ULong) = withLockLaunchEstablished {
+    fun seekPlayback(newTimeElapsed: Long) = withLockLaunchEstablished {
         send(ClientMessage.SeekPlayback(newTimeElapsed))
     }
 

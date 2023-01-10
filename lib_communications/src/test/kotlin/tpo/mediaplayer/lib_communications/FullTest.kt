@@ -1,5 +1,6 @@
 package tpo.mediaplayer.lib_communications
 
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Semaphore
@@ -138,10 +139,25 @@ internal class FullTest {
         s.close()
     }
 
-    @Test
-    fun helperPlayMediaOnRealTV(): Unit = runBlocking {
+    private fun getClient(): Client {
         val client = Client(object : ClientCallbacksPrinting {}, InetAddress.getLoopbackAddress())
         if (client.establish("hahaha") != null) fail("Failed to establish connection")
-        client.beginPlayback("sftp://testuser:testpassword@10.0.2.2:2022/Screen.mp4")
+        return client
+    }
+
+    @Test
+    fun helperPlayMediaOnRealTV() {
+        getClient().beginPlayback("sftp://testuser:testpassword@10.0.2.2:2022/Screen.mp4")
+    }
+
+    @Test
+    fun helperObserveMedia(): Unit = runBlocking {
+        val client = getClient()
+        awaitCancellation()
+    }
+
+    @Test
+    fun helperStopMedia() {
+        getClient().stopPlayback()
     }
 }

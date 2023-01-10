@@ -152,6 +152,7 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
                     is ServerMessage.UpdateNowPlaying.NowPlayingType.Error -> PlaybackStatus.Error(update.error)
                     is ServerMessage.UpdateNowPlaying.NowPlayingType.Idle -> PlaybackStatus.Idle
                 }
+                playbackStatus = newStatus
                 cbUpdateNowPlaying(newStatus)
             }
         }

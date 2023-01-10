@@ -1,6 +1,5 @@
 package tpo.mediaplayer.app_tv.service
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -40,7 +39,7 @@ class VideoPlayerLauncherService : LifecycleService() {
 
     private fun launchMainActivity() {
         val switchActivityIntent = Intent(this, VideoPlayer::class.java)
-        switchActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        switchActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(switchActivityIntent)
     }
 

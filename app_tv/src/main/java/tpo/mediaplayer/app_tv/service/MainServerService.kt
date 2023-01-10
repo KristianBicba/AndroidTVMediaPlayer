@@ -23,6 +23,9 @@ class MainServerService : Service() {
     inner class LocalBinder : Binder() {
         val clientRequestedPlayback: LiveData<ClientRequestedPlayback?> = clientRequestedPlaybackMLD
         fun updatePlaybackStatus(playbackStatus: PlaybackStatus) {
+            if (playbackStatus is PlaybackStatus.Idle || playbackStatus is PlaybackStatus.Error) {
+                clientRequestedPlaybackMLD.postValue(null)
+            }
             server.updateNowPlaying(playbackStatus)
         }
     }

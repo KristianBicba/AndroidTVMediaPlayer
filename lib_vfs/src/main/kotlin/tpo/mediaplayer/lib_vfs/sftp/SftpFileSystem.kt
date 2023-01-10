@@ -100,7 +100,7 @@ class SftpFileSystem(
             override val mimeType = null
             override val isFile = fileAttributes.type == FileMode.Type.REGULAR
             override val isDirectory = fileAttributes.type == FileMode.Type.DIRECTORY
-            override val size = fileAttributes.size.toULong()
+            override val size = fileAttributes.size
         }
     }
 

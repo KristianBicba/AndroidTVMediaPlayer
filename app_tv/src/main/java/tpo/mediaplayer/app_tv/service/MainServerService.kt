@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
-import tpo.mediaplayer.app_tv.Device
 import tpo.mediaplayer.app_tv.GodObject
+import tpo.mediaplayer.app_tv.db.Device
 import tpo.mediaplayer.lib_communications.server.Server
 import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
@@ -55,7 +55,7 @@ class MainServerService : Service() {
         }
 
         override fun onPairingRequest(clientName: String, clientGuid: String): String? {
-            val dao = GodObject.INSTANCE.db.deviceDao() ?: return "Unable to get DAO"
+            val dao = GodObject.instance.db.deviceDao() ?: return "Unable to get DAO"
             if (dao.getByGuid(clientGuid) != null) {
                 return "GUID is already paired"
             } else {
@@ -70,7 +70,7 @@ class MainServerService : Service() {
         override fun onConnectionRequest(clientGuid: String): String? {
             if (clientGuid == "test") return null // Allow test code to interact with the server
 
-            val dao = GodObject.INSTANCE.db.deviceDao() ?: return "Unable to get DAO"
+            val dao = GodObject.instance.db.deviceDao() ?: return "Unable to get DAO"
             if (dao.getByGuid(clientGuid) == null) {
                 return "Unknown device GUID"
             } else {

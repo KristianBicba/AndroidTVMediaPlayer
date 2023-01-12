@@ -3,6 +3,7 @@ package tpo.mediaplayer.app_tv
 import android.app.Application
 import androidx.room.Room
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import tpo.mediaplayer.app_tv.db.AppDatabase
 import java.security.Security
 
 
@@ -35,12 +36,14 @@ class GodObject : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        INSTANCE = this
+        instance = this
         setupBouncyCastle()
         setupDatabase()
     }
 
     companion object {
-        lateinit var INSTANCE: GodObject
+        @JvmStatic
+        lateinit var instance: GodObject
+            private set
     }
 }

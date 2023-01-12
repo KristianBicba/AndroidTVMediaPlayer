@@ -1,4 +1,4 @@
-package tpo.mediaplayer.app_tv;
+package tpo.mediaplayer.app_tv.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

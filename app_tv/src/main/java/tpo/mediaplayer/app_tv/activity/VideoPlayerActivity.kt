@@ -1,23 +1,18 @@
 package tpo.mediaplayer.app_tv.activity
 
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import tpo.mediaplayer.app_tv.AbstractBinder
 import tpo.mediaplayer.app_tv.R
 import tpo.mediaplayer.app_tv.VfsDataSource
 import tpo.mediaplayer.app_tv.VfsDataSource.VfsContainer
 import tpo.mediaplayer.app_tv.service.MainServerService
-import tpo.mediaplayer.app_tv.service.MainServerService.LocalBinder
 import tpo.mediaplayer.lib_communications.shared.NowPlaying
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.time.Instant
@@ -26,35 +21,19 @@ private val Player.isPlayingOrBuffering
     get() = playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_READY
 
 class VideoPlayerActivity : AppCompatActivity() {
-    private var serverShouldUnbind = false
-    private var serverBinder: LocalBinder? = null
+    private val server by lazy {
+        object : AbstractBinder<MainServerService.LocalBinder>(this, MainServerService::class.java) {
+            override fun onBind(binder: MainServerService.LocalBinder) {
+                binder.addListener(serverListener)
+            }
 
-    private val serverConnection: ServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            service as LocalBinder
-            service.addListener(serverListener)
-            serverBinder = service
-        }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            serverBinder = null
+            override fun onUnbind(binder: MainServerService.LocalBinder?) {
+                binder?.removeListener(serverListener)
+            }
         }
     }
 
-    private fun serverBind() {
-        val intent = Intent(this, MainServerService::class.java)
-        bindService(intent, serverConnection, BIND_AUTO_CREATE)
-        serverShouldUnbind = true
-    }
-
-    private fun serverUnbind() {
-        if (serverShouldUnbind) {
-            serverShouldUnbind = false
-            unbindService(serverConnection)
-        }
-    }
-
-    private val serverListener: MainServerService.Listener = object : MainServerService.Listener {
+    private val serverListener = object : MainServerService.Listener {
         private inline fun withReadyPlayer(block: (Player) -> Unit) {
             val player = player ?: return
             if (playbackStatus !is PlaybackStatus.Playing) return
@@ -82,7 +61,10 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var mediaSourceFactory: MediaSource.Factory
+    private val mediaSourceFactory by lazy {
+        DefaultMediaSourceFactory(this)
+            .setDataSourceFactory { VfsDataSource(vfsContainer) }
+    }
     private val vfsContainer = VfsContainer(null, null)
 
     private var player: ExoPlayer? = null
@@ -122,7 +104,7 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     private fun updatePlaybackStatus(update: PlaybackStatus) {
         playbackStatus = update
-        if (serverBinder != null) serverBinder!!.updatePlaybackStatus(update)
+        server.binder?.updatePlaybackStatus(update)
     }
 
     private fun updatePlaybackStatusSeek(isPlaying: Boolean, position: Long) {
@@ -186,15 +168,12 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_player)
-
-        mediaSourceFactory = DefaultMediaSourceFactory(this)
-            .setDataSourceFactory { VfsDataSource(vfsContainer) }
     }
 
     override fun onStart() {
         super.onStart()
         val uri = intent.getStringExtra("uri") ?: kotlin.run { finish(); return }
-        serverBind()
+        server.bind()
         initializePlayer()
         playMedia(uri)
     }
@@ -202,6 +181,6 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         releasePlayer()
-        serverUnbind()
+        server.unbind()
     }
 }

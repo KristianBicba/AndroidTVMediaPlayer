@@ -27,10 +27,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.VideoPlayer" />
+        <activity
+            android:name=".activity.VideoPlayerActivity"
+            android:launchMode="singleInstance" />
 
         <service android:name=".service.MainServerService" />
         <service android:name=".service.VideoPlayerLauncherService" />
+
+        <service
+            android:name=".service.KeepaliveService"
+            android:label="Media player keepalive service"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

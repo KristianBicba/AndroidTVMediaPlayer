@@ -3,9 +3,8 @@ package tpo.mediaplayer.app_tv.service
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import tpo.mediaplayer.app_tv.Device
 import tpo.mediaplayer.app_tv.GodObject
 import tpo.mediaplayer.lib_communications.server.Server
@@ -13,21 +12,27 @@ import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 
 class MainServerService : Service() {
-    data class ClientRequestedPlayback(
-        val connectionString: String,
-        val timeElapsed: Long,
-        val paused: Boolean
-    )
+    interface Listener {
+        fun onPlayRequest(connectionString: String) {}
+        fun onPauseRequest() {}
+        fun onResumeRequest() {}
+        fun onStopRequest() {}
+        fun onSeekRequest(newTimeElapsed: Long) {}
+    }
 
-    var clientRequestedPlayback: ClientRequestedPlayback? = null
-    val clientRequestedPlaybackMLD = MutableLiveData<ClientRequestedPlayback?>(null)
+    private lateinit var handler: Handler
+    private val listeners = mutableSetOf<Listener>()
 
     inner class LocalBinder : Binder() {
-        val clientRequestedPlayback: LiveData<ClientRequestedPlayback?> = clientRequestedPlaybackMLD
+        fun addListener(listener: Listener) {
+            listeners += listener
+        }
+
+        fun removeListener(listener: Listener) {
+            listeners -= listener
+        }
+
         fun updatePlaybackStatus(playbackStatus: PlaybackStatus) {
-            if (playbackStatus is PlaybackStatus.Idle || playbackStatus is PlaybackStatus.Error) {
-                clientRequestedPlaybackMLD.postValue(null)
-            }
             server.updateNowPlaying(playbackStatus)
         }
 
@@ -74,36 +79,32 @@ class MainServerService : Service() {
         }
 
         override fun onPlayRequest(connectionString: String) {
-            clientRequestedPlayback = ClientRequestedPlayback(
-                connectionString,
-                0,
-                false
-            )
-            clientRequestedPlaybackMLD.postValue(clientRequestedPlayback)
+            handler.post {
+                listeners.forEach { it.onPlayRequest(connectionString) }
+            }
         }
 
         override fun onPauseRequest() {
-            if (clientRequestedPlayback != null) {
-                clientRequestedPlayback = clientRequestedPlayback?.copy(paused = true)
-                clientRequestedPlaybackMLD.postValue(clientRequestedPlayback)
+            handler.post {
+                listeners.forEach { it.onPauseRequest() }
             }
         }
 
         override fun onResumeRequest() {
-            if (clientRequestedPlayback != null) {
-                clientRequestedPlayback = clientRequestedPlayback?.copy(paused = false)
-                clientRequestedPlaybackMLD.postValue(clientRequestedPlayback)
+            handler.post {
+                listeners.forEach { it.onResumeRequest() }
             }
         }
 
         override fun onStopRequest() {
-            clientRequestedPlaybackMLD.postValue(null)
+            handler.post {
+                listeners.forEach { it.onStopRequest() }
+            }
         }
 
         override fun onSeekRequest(newTimeElapsed: Long) {
-            if (clientRequestedPlayback != null) {
-                clientRequestedPlayback = clientRequestedPlayback?.copy(timeElapsed = newTimeElapsed)
-                clientRequestedPlaybackMLD.postValue(clientRequestedPlayback)
+            handler.post {
+                listeners.forEach { it.onSeekRequest(newTimeElapsed) }
             }
         }
 
@@ -111,6 +112,10 @@ class MainServerService : Service() {
             println("Server closing")
         }
     })
+
+    override fun onCreate() {
+        handler = Handler(mainLooper)
+    }
 
     override fun onBind(intent: Intent?): IBinder {
         server.open()

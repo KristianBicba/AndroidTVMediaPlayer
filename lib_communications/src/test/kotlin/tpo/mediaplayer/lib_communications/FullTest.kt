@@ -150,8 +150,13 @@ internal class FullTest {
     }
 
     @Test
+    fun helperSeek() {
+        getClient().seekPlayback(5000)
+    }
+
+    @Test
     fun helperObserveMedia(): Unit = runBlocking {
-        val client = getClient()
+        getClient()
         awaitCancellation()
     }
 

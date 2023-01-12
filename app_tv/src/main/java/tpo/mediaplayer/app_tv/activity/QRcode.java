@@ -166,7 +166,7 @@ public class QRcode extends AppCompatActivity {
     }
 
     private void switchActivities() {
-        Intent switchActivityIntent = new Intent(this, VideoPlayer.class);
+        Intent switchActivityIntent = new Intent(this, VideoPlayerActivity.class);
         startActivity(switchActivityIntent);
     }
 
@@ -189,6 +189,8 @@ public class QRcode extends AppCompatActivity {
             }
         }
     }
+
+
 
     @Override
     protected void onDestroy() {

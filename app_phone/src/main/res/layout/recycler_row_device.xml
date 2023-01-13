@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/update_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,14 +9,12 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
-
 
         <TextView
             android:id="@+id/device_id"
@@ -23,13 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="1"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/device_info"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
 
         <TextView
             android:id="@+id/device_name"
@@ -37,24 +36,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Device 1"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/device_id"
-            app:layout_constraintStart_toEndOf="@+id/device_id" />
+            app:layout_constraintBottom_toBottomOf="@+id/device_id"
+            app:layout_constraintStart_toEndOf="@+id/device_id"
+            app:layout_constraintTop_toTopOf="@+id/device_id"
+            tools:text="Device 1" />
 
         <TextView
             android:id="@+id/device_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="192.169.1.1"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/device_id"
-            app:layout_constraintTop_toBottomOf="@+id/device_id" />
+            app:layout_constraintTop_toBottomOf="@+id/device_id"
+            tools:text="/192.169.1.1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

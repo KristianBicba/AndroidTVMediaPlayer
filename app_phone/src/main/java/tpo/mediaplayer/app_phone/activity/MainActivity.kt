@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         vEditMediaServers.setOnClickListener {
-            val intent = Intent(this, EditPairedMediaServersActivity::class.java)
+            val intent = Intent(this, EditMediaServersActivity::class.java)
             startActivity(intent)
         }
 

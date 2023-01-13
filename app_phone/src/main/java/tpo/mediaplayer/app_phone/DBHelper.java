@@ -60,20 +60,6 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addDevice(String name, String info) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_NAME, name);
-        cv.put(COLUMN_IP, info);
-        long result = db.insert(TABLE_NAME, null, cv);
-        if(result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     public void addServer(String username, String password, String path) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -91,17 +77,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor readAllData() {
-        String query = "SELECT * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = null;
-        if(db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        return cursor;
-    }
-
     public Cursor readAllDataServer() {
         String query = "SELECT * FROM " + TABLE_NAME1;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -112,83 +87,4 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
-
-    public void updateData(String row_id, String name, String info)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_NAME, name);
-        cv.put(COLUMN_IP, info);
-
-        long result = db.update(TABLE_NAME, cv, "device_id=?", new String[]{row_id});
-        if(result == -1)
-        {
-            Toast.makeText(context, "Failed to update", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Updated successfully!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public void deleteOneRow(String row_id)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_NAME, "device_id=?", new String[]{row_id});
-
-        if(result == -1)
-        {
-            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Deleted successfully!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public String[] getDevices()
-    {
-        String query = "SELECT device_name FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = null;
-        if(db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        ArrayList<String> devices = new ArrayList<String>();
-
-        if (cursor != null && cursor.getCount()>0){
-            while(cursor.moveToNext())
-            {
-                devices.add(cursor.getString(0));
-            }
-        }
-        cursor.close();
-
-        String[] devices1 = devices.toArray(new String[devices.size()]);
-
-        return devices1;
-    }
-
-    public String[] getServers()
-    {
-        String query = "SELECT path FROM " + TABLE_NAME1;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = null;
-        if(db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        ArrayList<String> servers = new ArrayList<String>();
-
-        if (cursor != null && cursor.getCount()>0){
-            while(cursor.moveToNext())
-            {
-                servers.add(cursor.getString(0));
-            }
-        }
-        cursor.close();
-
-        String[] servers1 = servers.toArray(new String[servers.size()]);
-
-        return servers1;
-    }
-
 }

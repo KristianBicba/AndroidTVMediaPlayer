@@ -1,6 +1,7 @@
 package tpo.mediaplayer.app_phone.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -44,7 +45,7 @@ class EditPairedDevicesActivity : AppCompatActivity() {
             setPrompt("Volume up to use flash")
             setBeepEnabled(false)
             setOrientationLocked(true)
-            captureActivity = CaptureAct::class.java
+            captureActivity = ScanQRCodeActivity::class.java
         }
 
         scannerLauncher.launch(options)
@@ -76,7 +77,17 @@ class EditPairedDevicesActivity : AppCompatActivity() {
 
         val adapter = PairedDeviceAdapter(::onClickDevice)
         vDeviceList.adapter = adapter
-        GodObject.instance.db.deviceDao().getAllDevicesLive().observe(this, adapter::submitList)
+
+        GodObject.instance.db.deviceDao().getAllDevicesLive().observe(this) {
+            if (it == null || it.isEmpty()) {
+                vNoDevicesImage.visibility = View.VISIBLE
+                vNoDevicesText.visibility = View.VISIBLE
+            } else {
+                vNoDevicesImage.visibility = View.GONE
+                vNoDevicesText.visibility = View.GONE
+            }
+            adapter.submitList(it)
+        }
 
         registerScannerLauncher()
     }

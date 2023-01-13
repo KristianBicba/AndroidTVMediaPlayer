@@ -11,7 +11,7 @@ import android.widget.Toast;
 import tpo.mediaplayer.app_phone.DBHelper;
 import tpo.mediaplayer.app_phone.R;
 
-public class AddServer extends AppCompatActivity {
+public class EditMediaServerDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class AddServer extends AppCompatActivity {
         buttonAddServer.setOnClickListener(v ->
         {
             if (!TextUtils.isEmpty(usernameInput.getText()) &&!TextUtils.isEmpty(passwordInput.getText()) &&!TextUtils.isEmpty(pathInput.getText())) {
-                DBHelper database = new DBHelper(AddServer.this);
+                DBHelper database = new DBHelper(EditMediaServerDetailsActivity.this);
                 database.addServer(usernameInput.getText().toString(), passwordInput.getText().toString(), pathInput.getText().toString());
                 Toast.makeText(getApplicationContext(), "Added Server", Toast.LENGTH_LONG).show();
             } else {

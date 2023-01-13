@@ -1,6 +1,7 @@
 package tpo.mediaplayer.app_phone
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
@@ -8,12 +9,25 @@ import androidx.room.Room
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tpo.mediaplayer.app_phone.db.AppDatabase
 import java.security.Security
+import java.util.UUID
 
 class GodObject : Application() {
     lateinit var db: AppDatabase
         private set
 
     val deviceName by lazy { "${Build.MANUFACTURER} ${Build.MODEL}" }
+    val guid by lazy {
+        val sharedPref = getSharedPreferences("guid", Context.MODE_PRIVATE)!!
+        val storedGuid = sharedPref.getString("guid", null)
+        if (storedGuid != null) return@lazy storedGuid
+
+        val generatedGuid = UUID.randomUUID().toString()
+        sharedPref.edit().apply {
+            putString("guid", generatedGuid)
+            apply()
+        }
+        generatedGuid
+    }
 
     private fun setupBouncyCastle() {
         val provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)

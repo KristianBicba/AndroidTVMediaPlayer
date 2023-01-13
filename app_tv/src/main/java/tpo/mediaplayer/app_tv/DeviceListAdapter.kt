@@ -22,6 +22,7 @@ private object DeviceDiffCallback : DiffUtil.ItemCallback<Device>() {
 
 class NewDeviceListAdapter(private val onClick: (Int) -> Unit) :
     ListAdapter<Device, NewDeviceListAdapter.ViewHolder>(DeviceDiffCallback) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item, parent, false)

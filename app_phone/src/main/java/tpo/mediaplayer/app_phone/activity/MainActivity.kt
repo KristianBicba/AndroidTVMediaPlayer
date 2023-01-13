@@ -24,7 +24,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestRemoteControl(device: Device) {
-        println("Requesting control of $device")
+        val intent = Intent(this, RemoteControlActivity::class.java)
+        intent.putExtra("server_uid", device.uid)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

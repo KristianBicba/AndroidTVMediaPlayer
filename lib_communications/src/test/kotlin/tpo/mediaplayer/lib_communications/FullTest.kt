@@ -20,9 +20,9 @@ private interface ServerCallbacksPrinting : ServerCallbacks {
         println("server.onOpen($server)")
     }
 
-    override fun onPairingRequest(clientName: String, clientGuid: String): String? {
+    override fun onPairingRequest(clientName: String, clientGuid: String): ServerCallbacks.PairingRequestResult {
         println("server.onPairingRequest($clientName, $clientGuid)")
-        return null
+        return ServerCallbacks.PairingRequestResult.Success("Server")
     }
 
     override fun onConnectionRequest(clientGuid: String): String? {

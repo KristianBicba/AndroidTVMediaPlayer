@@ -45,6 +45,10 @@ class MainServerService : Service() {
                 return pairingData.toByteArray()
             }
         }
+
+        fun disconnectClient(guid: String) {
+            server.disconnectClient(guid)
+        }
     }
 
     private val binder = LocalBinder()
@@ -54,16 +58,17 @@ class MainServerService : Service() {
             println("Server opening")
         }
 
-        override fun onPairingRequest(clientName: String, clientGuid: String): String? {
-            val dao = GodObject.instance.db.deviceDao() ?: return "Unable to get DAO"
+        override fun onPairingRequest(clientName: String, clientGuid: String): ServerCallbacks.PairingRequestResult {
+            val dao = GodObject.instance.db.deviceDao()
+                ?: return ServerCallbacks.PairingRequestResult.Error("Unable to get DAO")
             if (dao.getByGuid(clientGuid) != null) {
-                return "GUID is already paired"
+                return ServerCallbacks.PairingRequestResult.Error("GUID is already paired")
             } else {
                 dao.insert(Device().apply {
                     deviceName = clientName
                     communicationStr = clientGuid
                 })
-                return null
+                return ServerCallbacks.PairingRequestResult.Success(GodObject.instance.deviceName)
             }
         }
 

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class MediaServer(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "connection_string") val connectionString: String
 )

@@ -8,12 +8,17 @@ interface ServerCallbacks {
     /** Called when the server is started. */
     fun onOpen(server: Server)
 
+    sealed interface PairingRequestResult {
+        data class Success(val myName: String) : PairingRequestResult
+        data class Error(val error: String) : PairingRequestResult
+    }
+
     /**
      * Called when a device has successfully connected and is requesting pairing.
      *
-     * Return null to accept, or return an error message to deny.
+     * Return device name to accept, or return an error message to deny.
      */
-    fun onPairingRequest(clientName: String, clientGuid: String): String?
+    fun onPairingRequest(clientName: String, clientGuid: String): PairingRequestResult
 
     /**
      * Called when a device is attempting to connect, and is not attempting to pair.

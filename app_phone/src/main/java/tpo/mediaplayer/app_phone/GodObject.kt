@@ -1,6 +1,7 @@
 package tpo.mediaplayer.app_phone
 
 import android.app.Application
+import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import androidx.room.Room
@@ -11,6 +12,8 @@ import java.security.Security
 class GodObject : Application() {
     lateinit var db: AppDatabase
         private set
+
+    val deviceName by lazy { "${Build.MANUFACTURER} ${Build.MODEL}" }
 
     private fun setupBouncyCastle() {
         val provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)

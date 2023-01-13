@@ -130,41 +130,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateDataServer(String row_id, String username, String password, String path)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_USERNAME, username);
-        cv.put(COLUMN_PASSWORD, password);
-        cv.put(COLUMN_PATH, path);
-
-        long result = db.update(TABLE_NAME1, cv, "server_id=?", new String[]{row_id});
-        if(result == -1)
-        {
-            Toast.makeText(context, "Failed to update", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Updated successfully!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
     public void deleteOneRow(String row_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, "device_id=?", new String[]{row_id});
-
-        if(result == -1)
-        {
-            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Deleted successfully!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void deleteOneRowServer(String row_id)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_NAME, "server_id=?", new String[]{row_id});
 
         if(result == -1)
         {

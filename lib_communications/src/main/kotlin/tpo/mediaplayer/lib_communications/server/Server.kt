@@ -24,7 +24,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
 
         inner class Client(socket: Socket) : BaseClient(socket) {
             private var clientStatusView: PlaybackStatus = PlaybackStatus.Idle
-            private var isEstablished = false
+            private var guid: String? = null
 
             override suspend fun onLine(line: String) {
                 println("Server.onLine($line)")
@@ -47,7 +47,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             private suspend fun onMessage(message: ClientMessage): Unit = clientLock.withReentrantLock {
                 when (message) {
                     is ClientMessage.Pair -> {
-                        if (isEstablished) {
+                        if (guid != null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
@@ -57,17 +57,18 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                         } else if (!expectedCode.contentEquals(message.pairingCode)) {
                             send(ServerMessage.PairingOrConnectionDenied("Incorrect pairing code"))
                         } else {
-                            val error = cbPairingRequest(message.myName, message.myGuid)
-                            if (error != null) {
-                                send(ServerMessage.PairingOrConnectionDenied(error))
-                            } else {
-                                isEstablished = true
-                                send(ServerMessage.PairingAccepted("Android TV"))
+                            when (val result = cbPairingRequest(message.myName, message.myGuid)) {
+                                is ServerCallbacks.PairingRequestResult.Error ->
+                                    send(ServerMessage.PairingOrConnectionDenied(result.error))
+                                is ServerCallbacks.PairingRequestResult.Success -> {
+                                    guid = message.myGuid
+                                    send(ServerMessage.PairingAccepted(result.myName))
+                                }
                             }
                         }
                     }
                     is ClientMessage.Connect -> {
-                        if (isEstablished) {
+                        if (guid != null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
@@ -75,7 +76,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                         if (error != null) {
                             send(ServerMessage.PairingOrConnectionDenied(error))
                         } else {
-                            isEstablished = true
+                            guid = message.myGuid
                             send(ServerMessage.ConnectionAccepted)
                             serverLock.withReentrantLock {
                                 sendStatus(status)
@@ -83,7 +84,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                         }
                     }
                     is ClientMessage.Heartbeat -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
@@ -92,35 +93,35 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                         }
                     }
                     is ClientMessage.BeginPlayback -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
                         cbPlayRequest(message.connectionString)
                     }
                     is ClientMessage.PausePlayback -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
                         cbPauseRequest()
                     }
                     is ClientMessage.ResumePlayback -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
                         cbResumeRequest()
                     }
                     is ClientMessage.StopPlayback -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
                         cbStopRequest()
                     }
                     is ClientMessage.SeekPlayback -> {
-                        if (!isEstablished) {
+                        if (guid == null) {
                             println("Unexpected message: $message")
                             return@withReentrantLock
                         }
@@ -165,8 +166,13 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             }
 
             suspend fun updateStatus() = clientLock.withReentrantLock {
-                if (!isEstablished) return@withReentrantLock
+                if (guid == null) return@withReentrantLock
                 sendStatus(status)
+            }
+
+            suspend fun closeIfGuid(expected: String) = clientLock.withReentrantLock {
+                if (guid == expected)
+                    closeClient(this)
             }
         }
 
@@ -202,6 +208,10 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
             for (client in clients) {
                 client.updateStatus()
             }
+        }
+
+        suspend fun disconnectClient(guid: String): Unit = serverLock.withReentrantLock {
+            clients.forEach { it.closeIfGuid(guid) }
         }
     }
 
@@ -267,6 +277,11 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
     /** Updates the "now playing" data with the [newValue]. */
     fun updateNowPlaying(newValue: PlaybackStatus): Unit = withLockLaunch {
         server?.updateNowPlaying(newValue)
+    }
+
+    /** Disconnects the client with the specified guid, if connected. */
+    fun disconnectClient(guid: String): Unit = withLockLaunch {
+        server?.disconnectClient(guid)
     }
 
     private suspend fun shutDown(error: Throwable?): Unit = mainLock.withLock {

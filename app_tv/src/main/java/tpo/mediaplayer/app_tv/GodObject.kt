@@ -1,6 +1,7 @@
 package tpo.mediaplayer.app_tv
 
 import android.app.Application
+import android.os.Build
 import androidx.room.Room
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import tpo.mediaplayer.app_tv.db.AppDatabase
@@ -10,6 +11,8 @@ import java.security.Security
 class GodObject : Application() {
     lateinit var db: AppDatabase
         private set
+
+    val deviceName by lazy { "${Build.MANUFACTURER} ${Build.MODEL}" }
 
     private fun setupBouncyCastle() {
         val provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)

@@ -68,11 +68,12 @@ class PairingActivity : AppCompatActivity() {
             setNegativeButton("No", null)
             setPositiveButton("Yes") { _, _ ->
                 db.deviceDao().delete(device)
+                server.binder?.disconnectClient(device.communicationStr)
             }
             create()
         }.apply {
             setOnShowListener {
-                val button = getButton(AlertDialog.BUTTON_POSITIVE)
+                val button = getButton(AlertDialog.BUTTON_NEGATIVE)
                 button.requestFocus()
             }
             show()
@@ -100,7 +101,7 @@ class PairingActivity : AppCompatActivity() {
         vDeviceName = findViewById(R.id.deviceName)
         vDeviceList = findViewById(R.id.deviceList)
 
-        vDeviceName.text = Settings.Global.getString(contentResolver, "device_name")
+        vDeviceName.text = GodObject.instance.deviceName
         setupRecyclerView(::clickDevice)
     }
 

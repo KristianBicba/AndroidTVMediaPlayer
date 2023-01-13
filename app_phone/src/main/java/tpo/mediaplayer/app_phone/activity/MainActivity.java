@@ -13,12 +13,10 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.io.IOException;
-import java.net.Socket;
-
-import tpo.mediaplayer.app_phone.DBHelper;
+import tpo.mediaplayer.app_phone.GodObject;
 import tpo.mediaplayer.app_phone.HexUtilKt;
 import tpo.mediaplayer.app_phone.R;
+import tpo.mediaplayer.app_phone.db.Device;
 import tpo.mediaplayer.lib_communications.client.ClientPairingHelper;
 import tpo.mediaplayer.lib_communications.shared.PairingData;
 
@@ -90,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
     private void attemptPairing(PairingData data) {
         System.out.println("Got pairing data!");
         new Thread(() -> {
-            ClientPairingHelper result =
-                    ClientPairingHelper.attemptToPair(data, "Android", "1234");
+            ClientPairingHelper result = ClientPairingHelper.attemptToPair(
+                    data, GodObject.getInstance().getDeviceName(), "1234"
+            );
             mainHandler.post(() -> {
                 if (result == null) {
                     Toast.makeText(getApplicationContext(), "Povezava neuspešna", Toast.LENGTH_SHORT)
@@ -99,11 +98,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Povezava uspešna", Toast.LENGTH_SHORT)
                             .show();
-                    DBHelper database = new DBHelper(MainActivity.this);
-                    database.addDevice(
+                    GodObject.getInstance().getDb().deviceDao().insertDevice(new Device(
+                            0,
                             result.getName(),
                             HexUtilKt.hexEncode(result.getAddress().getAddress())
-                    );
+                    ));
                 }
             });
         }).start();

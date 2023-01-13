@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Upsert
 
 @Dao
 interface MediaServerDao {
@@ -19,6 +20,9 @@ interface MediaServerDao {
     @Insert
     fun insertMediaServer(mediaServer: MediaServer)
 
-    @Query("DELETE FROM Device WHERE uid = :uid")
+    @Upsert
+    fun upsertMediaServer(mediaServer: MediaServer)
+
+    @Query("DELETE FROM MediaServer WHERE uid = :uid")
     fun deleteMediaServerByUid(uid: Int)
 }

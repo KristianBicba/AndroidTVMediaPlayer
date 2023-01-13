@@ -1,42 +1,65 @@
-package tpo.mediaplayer.app_phone.activity;
+package tpo.mediaplayer.app_phone.activity
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import tpo.mediaplayer.app_phone.GodObject
+import tpo.mediaplayer.app_phone.R
+import tpo.mediaplayer.app_phone.db.MediaServer
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+class EditMediaServerDetailsActivity : AppCompatActivity() {
+    private lateinit var vScreenTitle: TextView
+    private lateinit var vButtonCommit: Button
+    private lateinit var vButtonRemove: Button
+    private lateinit var vEditName: EditText
+    private lateinit var vEditConnectionString: EditText
 
-import tpo.mediaplayer.app_phone.DBHelper;
-import tpo.mediaplayer.app_phone.R;
+    private var uid: Int? = null
 
-public class EditMediaServerDetailsActivity extends AppCompatActivity {
+    @SuppressLint("SetTextI18n")
+    private fun adjustIfEditing() {
+        val uid = intent.getIntExtra("uid", 0)
+        if (uid == 0) return
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_server);
+        val mediaServer = GodObject.instance.db.mediaServerDao().getMediaServerByUid(uid) ?: return
+        this.uid = uid
+        vScreenTitle.text = "Edit Server"
+        vButtonCommit.text = "EDIT SERVER"
+        vButtonRemove.visibility = View.VISIBLE
+        vEditName.setText(mediaServer.name)
+        vEditConnectionString.setText(mediaServer.connectionString)
+    }
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+    private fun onClickCommit() {
+        val entity = MediaServer(uid ?: 0, vEditName.text.toString(), vEditConnectionString.text.toString())
+        GodObject.instance.db.mediaServerDao().upsertMediaServer(entity)
+        finish()
+    }
 
-        EditText usernameInput = findViewById(R.id.textInputUsername);
-        EditText passwordInput = findViewById(R.id.textInputPassword);
-        EditText pathInput = findViewById(R.id.textInputPath);
+    private fun onClickRemove() {
+        GodObject.instance.db.mediaServerDao().deleteMediaServerByUid(uid ?: return)
+        finish()
+    }
 
-        Button buttonAddServer = findViewById(R.id.buttonAddServer);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_edit_mediaserver_details)
 
-        buttonAddServer.setOnClickListener(v ->
-        {
-            if (!TextUtils.isEmpty(usernameInput.getText()) &&!TextUtils.isEmpty(passwordInput.getText()) &&!TextUtils.isEmpty(pathInput.getText())) {
-                DBHelper database = new DBHelper(EditMediaServerDetailsActivity.this);
-                database.addServer(usernameInput.getText().toString(), passwordInput.getText().toString(), pathInput.getText().toString());
-                Toast.makeText(getApplicationContext(), "Added Server", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Missing Fields", Toast.LENGTH_LONG).show();
-            }
-        });
+        supportActionBar?.hide()
+
+        vScreenTitle = findViewById(R.id.textView4)
+        vButtonCommit = findViewById(R.id.buttonAddServer)
+        vButtonRemove = findViewById(R.id.buttonRemoveServer)
+        vEditName = findViewById(R.id.textInputName)
+        vEditConnectionString = findViewById(R.id.textInputConnectionString)
+
+        adjustIfEditing()
+
+        vButtonCommit.setOnClickListener { onClickCommit() }
+        vButtonRemove.setOnClickListener { onClickRemove() }
     }
 }

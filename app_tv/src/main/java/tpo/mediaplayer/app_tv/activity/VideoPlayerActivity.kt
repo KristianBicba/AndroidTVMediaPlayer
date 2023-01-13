@@ -73,8 +73,10 @@ class VideoPlayerActivity : AppCompatActivity() {
     private val playerListener: Player.Listener = object : Player.Listener {
         override fun onEvents(player: Player, events: Player.Events) {
             when {
-                events.contains(Player.EVENT_PLAYER_ERROR) ->
+                events.contains(Player.EVENT_PLAYER_ERROR) -> {
                     updatePlaybackStatus(PlaybackStatus.Error(player.playerError.toString()))
+                    finish()
+                }
                 events.contains(Player.EVENT_POSITION_DISCONTINUITY) ->
                     if (player.isPlayingOrBuffering)
                         updatePlaybackStatusSeek(player.isPlaying, player.currentPosition)

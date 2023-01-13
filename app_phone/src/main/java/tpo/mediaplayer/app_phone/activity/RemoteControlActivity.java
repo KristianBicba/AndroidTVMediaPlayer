@@ -18,7 +18,7 @@ import tpo.mediaplayer.lib_communications.client.Client;
 
 public class RemoteControlActivity extends AppCompatActivity {
 
-    static Television televizija = ConnectActivity.getTelevision();
+    static Television televizija = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

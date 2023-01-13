@@ -3,7 +3,6 @@ package tpo.mediaplayer.app_phone.recyclerViewAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import tpo.mediaplayer.app_phone.R;
-import tpo.mediaplayer.app_phone.activity.UpdateActivity;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
@@ -52,11 +50,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.update_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UpdateActivity.class);
-                intent.putExtra("id", String.valueOf(device_id.get(position)));
-                intent.putExtra("name", String.valueOf(device_name.get(position)));
-                intent.putExtra("info", String.valueOf(device_info.get(position)));
-                activity.startActivityForResult(intent, 1);
+//                Intent intent = new Intent(context, UpdateActivity.class);
+//                intent.putExtra("id", String.valueOf(device_id.get(position)));
+//                intent.putExtra("name", String.valueOf(device_name.get(position)));
+//                intent.putExtra("info", String.valueOf(device_info.get(position)));
+//                activity.startActivityForResult(intent, 1);
             }
         });
     }

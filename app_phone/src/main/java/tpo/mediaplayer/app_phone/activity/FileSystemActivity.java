@@ -19,7 +19,7 @@ import tpo.mediaplayer.app_phone.Television;
 
 public class FileSystemActivity extends AppCompatActivity {
 
-    public static Television televizija = ConnectActivity.getTelevision();
+    public static Television televizija = null;
     private RecyclerView recyclerViewFiles;
     private CustomAdapterFiles customAdapterFiles;
 

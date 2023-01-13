@@ -16,11 +16,7 @@
         android:theme="@style/Theme.TPOapp">
         <activity android:name=".activity.RemoteControlActivity" />
         <activity android:name=".activity.FileSystemActivity" />
-        <activity android:name=".activity.ConnectActivity" />
         <activity android:name=".activity.AddServer" />
-        <activity
-            android:name=".activity.UpdateActivity"
-            android:parentActivityName=".activity.SeznanjeneNaprave" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -36,13 +32,13 @@
             android:theme="@style/zxing_CaptureTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activity.SeznanjeneNaprave"
+            android:name=".activity.EditPairedDevicesActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activity.SeznanjeniServerji"
+            android:name=".activity.EditPairedMediaServersActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"

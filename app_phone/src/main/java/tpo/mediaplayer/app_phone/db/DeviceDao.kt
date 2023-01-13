@@ -1,5 +1,6 @@
 package tpo.mediaplayer.app_phone.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,6 +12,9 @@ interface DeviceDao {
 
     @Query("SELECT * FROM Device")
     fun getAllDevices(): List<Device>
+
+    @Query("SELECT * FROM Device")
+    fun getAllDevicesLive(): LiveData<List<Device>>
 
     @Insert
     fun insertDevice(device: Device)

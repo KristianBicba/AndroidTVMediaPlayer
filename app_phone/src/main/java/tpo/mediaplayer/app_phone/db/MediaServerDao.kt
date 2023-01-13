@@ -1,5 +1,6 @@
 package tpo.mediaplayer.app_phone.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,6 +12,9 @@ interface MediaServerDao {
 
     @Query("SELECT * FROM MediaServer")
     fun getAllMediaServers(): List<MediaServer>
+
+    @Query("SELECT * FROM MediaServer")
+    fun getAllMediaServersLive(): LiveData<List<MediaServer>>
 
     @Insert
     fun insertMediaServer(mediaServer: MediaServer)

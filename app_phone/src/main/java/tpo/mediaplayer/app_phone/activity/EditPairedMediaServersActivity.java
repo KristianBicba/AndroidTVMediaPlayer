@@ -13,7 +13,7 @@ import tpo.mediaplayer.app_phone.recyclerViewAdapter.CustomAdapterServers;
 import tpo.mediaplayer.app_phone.DBHelper;
 import tpo.mediaplayer.app_phone.R;
 
-public class SeznanjeniServerji extends AppCompatActivity
+public class EditPairedMediaServersActivity extends AppCompatActivity
 {
     RecyclerView recyclerViewServer;
     DBHelper myDB;
@@ -23,11 +23,11 @@ public class SeznanjeniServerji extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.seznanjeniserverji);
+        setContentView(R.layout.activity_edit_paired_mediaservers);
 
         recyclerViewServer = findViewById(R.id.recyclerViewServer);
 
-        myDB = new DBHelper(SeznanjeniServerji.this);
+        myDB = new DBHelper(EditPairedMediaServersActivity.this);
         server_id = new ArrayList<>();
         username = new ArrayList<>();
         path = new ArrayList<>();
@@ -39,9 +39,9 @@ public class SeznanjeniServerji extends AppCompatActivity
 
         storeDataInArrays();
 
-        customAdapterServers = new CustomAdapterServers(SeznanjeniServerji.this, this,  server_id, username, path);
+        customAdapterServers = new CustomAdapterServers(EditPairedMediaServersActivity.this, this,  server_id, username, path);
         recyclerViewServer.setAdapter(customAdapterServers);
-        recyclerViewServer.setLayoutManager(new LinearLayoutManager(SeznanjeniServerji.this));
+        recyclerViewServer.setLayoutManager(new LinearLayoutManager(EditPairedMediaServersActivity.this));
     }
 
     private void storeDataInArrays() {

@@ -7,33 +7,6 @@
     tools:context=".activity.MainActivity">
 
     <Button
-        android:id="@+id/dodaj_streznik"
-        android:layout_width="144dp"
-        android:layout_height="68dp"
-        android:layout_marginEnd="15dp"
-        android:backgroundTint="@color/cardview_dark_background"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="@string/dodaj_streznik_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/dodaj_napravo"
-        app:layout_constraintTop_toTopOf="@+id/dodaj_napravo" />
-
-    <Button
-        android:id="@+id/dodaj_napravo"
-        android:layout_width="144dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="15dp"
-        android:backgroundTint="@color/cardview_dark_background"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="@string/dodaj_napravo_text"
-        app:layout_constraintBottom_toTopOf="@+id/seznanjene_naprave"
-        app:layout_constraintEnd_toStartOf="@+id/dodaj_streznik"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
         android:id="@+id/seznanjene_naprave"
         android:layout_width="250dp"
         android:layout_height="50dp"
@@ -44,12 +17,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dodaj_napravo" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/seznanjeni_strezniki"
         android:layout_width="250dp"
         android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/seznanjeni_strezniki_text"
@@ -63,7 +38,7 @@
         android:id="@+id/imageView"
         android:layout_width="253dp"
         android:layout_height="316dp"
-        app:layout_constraintBottom_toTopOf="@+id/dodaj_napravo"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -73,6 +48,8 @@
         android:id="@+id/buttonConnect"
         android:layout_width="250dp"
         android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
         android:text="Connect"
@@ -85,6 +62,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Streaming App"
         android:textSize="34sp"

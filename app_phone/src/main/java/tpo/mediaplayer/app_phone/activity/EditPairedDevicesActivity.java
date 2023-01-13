@@ -24,7 +24,7 @@ import tpo.mediaplayer.app_phone.recyclerViewAdapter.CustomAdapter;
 import tpo.mediaplayer.app_phone.DBHelper;
 import tpo.mediaplayer.app_phone.R;
 
-public class SeznanjeneNaprave extends AppCompatActivity
+public class EditPairedDevicesActivity extends AppCompatActivity
 {
     RecyclerView recyclerView;
 
@@ -38,7 +38,7 @@ public class SeznanjeneNaprave extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.seznanjenenaprave);
+        setContentView(R.layout.activity_edit_paired_devices);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -46,7 +46,7 @@ public class SeznanjeneNaprave extends AppCompatActivity
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        myDB = new DBHelper(SeznanjeneNaprave.this);
+        myDB = new DBHelper(EditPairedDevicesActivity.this);
         device_id = new ArrayList<>();
         device_name = new ArrayList<>();
         device_info = new ArrayList<>();
@@ -61,9 +61,9 @@ public class SeznanjeneNaprave extends AppCompatActivity
         });
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(SeznanjeneNaprave.this, this, device_id, device_name, device_info);
+        customAdapter = new CustomAdapter(EditPairedDevicesActivity.this, this, device_id, device_name, device_info);
         recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(SeznanjeneNaprave.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(EditPairedDevicesActivity.this));
 
     }
 
@@ -105,8 +105,8 @@ public class SeznanjeneNaprave extends AppCompatActivity
     ActivityResultLauncher<ScanOptions> barLauncher1 = registerForActivityResult(new ScanContract(), result -> {
 
         if(result.getContents() != null && result.getContents().startsWith("naprava")) {
-            DBHelper database = new DBHelper(SeznanjeneNaprave.this);
-            database.addDevice(result.getContents(), result.getContents());
+//            DBHelper database = new DBHelper(SeznanjeneNaprave.this);
+//            database.addDevice(result.getContents(), result.getContents());
         }
         else
         {

@@ -15,7 +15,6 @@ import java.net.InetAddress;
 import java.util.HashMap;
 
 import tpo.mediaplayer.app_phone.DBHelper;
-import tpo.mediaplayer.app_phone.GodObject;
 import tpo.mediaplayer.app_phone.HexUtilKt;
 import tpo.mediaplayer.app_phone.R;
 import tpo.mediaplayer.app_phone.Television;
@@ -79,12 +78,6 @@ public class ConnectActivity extends AppCompatActivity {
             public void onClick(View v) {
                 InetAddress address = serverIps.get(spin1.getSelectedItem().toString());
                 String connString = spin2.getSelectedItem().toString();
-
-                GodObject.INSTANCE.setSession(new GodObject.BrowsingSession(
-                        address,
-                        connString,
-                        "/"
-                ));
 
                 startActivity(new Intent(ConnectActivity.this, FileSystemActivity.class));
             }

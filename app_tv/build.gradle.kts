@@ -1,5 +1,3 @@
-import android.annotation.SuppressLint
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -44,7 +42,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.leanback:leanback:1.0.0")

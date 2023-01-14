@@ -1,11 +1,18 @@
 <resources>
     <string name="app_name">Media player remote control</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_data">No Data</string>
+    <string name="pairing_prompt">Volume up to use flash</string>
+    <string name="pairing_status_success">Pairing successful</string>
+    <string name="pairing_status_failure">Pairing failed</string>
+    <string name="pairing_status_scanfailure">Pairing code not recognised</string>
     <string name="main_title">Remote control</string>
     <string name="main_button_paired_devices">Edit paired devices</string>
     <string name="main_button_mediaservers">Edit media servers</string>
     <string name="main_button_connect">Connect</string>
-    <string name="no_data">No Data</string>
     <string name="edit_paired_devices_title">Paired devices</string>
+    <string name="edit_paired_devices_delete_prompt">Really delete device</string>
     <string name="edit_mediaservers_title">Media servers</string>
     <string name="edit_mediaserver_details_title_add">Add server</string>
     <string name="edit_mediaserver_details_title_edit">Edit server</string>

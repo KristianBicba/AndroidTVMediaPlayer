@@ -36,13 +36,17 @@ class EditPairedDevicesActivity : AppCompatActivity() {
                 true
             }
             if (!codeParsed)
-                Toast.makeText(applicationContext, "Narobe skenirana naprava", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.pairing_status_scanfailure),
+                    Toast.LENGTH_SHORT
+                ).show()
         }
     }
 
     private fun scanDevice() {
         val options = ScanOptions().apply {
-            setPrompt("Volume up to use flash")
+            setPrompt(getString(R.string.pairing_prompt))
             setBeepEnabled(false)
             setOrientationLocked(true)
             captureActivity = ScanQRCodeActivity::class.java
@@ -53,9 +57,9 @@ class EditPairedDevicesActivity : AppCompatActivity() {
 
     private fun onClickDevice(device: Device) {
         AlertDialog.Builder(this).apply {
-            setMessage("Really delete device ${device.name}?")
-            setNegativeButton("No", null)
-            setPositiveButton("Yes") { _, _ ->
+            setMessage(getString(R.string.edit_paired_devices_delete_prompt) + " ${device.name}?")
+            setNegativeButton(getString(R.string.no), null)
+            setPositiveButton(getString(R.string.yes)) { _, _ ->
                 GodObject.instance.db.deviceDao().deleteDeviceByUid(device.uid)
             }
             show()

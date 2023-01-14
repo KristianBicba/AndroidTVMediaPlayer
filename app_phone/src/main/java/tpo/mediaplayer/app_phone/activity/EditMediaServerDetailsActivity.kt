@@ -25,8 +25,8 @@ class EditMediaServerDetailsActivity : AppCompatActivity() {
 
         val mediaServer = GodObject.instance.db.mediaServerDao().getMediaServerByUid(uid) ?: return
         this.uid = uid
-        vScreenTitle.text = resources.getString(R.string.edit_mediaserver_details_title_edit)
-        vButtonCommit.text = resources.getString(R.string.edit_mediaserver_details_button_commit_edit)
+        vScreenTitle.text = getString(R.string.edit_mediaserver_details_title_edit)
+        vButtonCommit.text = getString(R.string.edit_mediaserver_details_button_commit_edit)
         vButtonRemove.visibility = View.VISIBLE
         vEditName.setText(mediaServer.name)
         vEditConnectionString.setText(mediaServer.connectionString)

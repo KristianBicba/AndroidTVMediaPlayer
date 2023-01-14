@@ -11,11 +11,12 @@ import tpo.mediaplayer.lib_communications.client.ClientCallbacks
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.io.IOException
 import java.net.InetAddress
+import java.time.Instant
 
 class ClientService : Service() {
     interface Listener {
         fun onOpen() {}
-        fun onUpdateNowPlaying(newValue: PlaybackStatus) {}
+        fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {}
         fun onClose(error: String?) {}
     }
 
@@ -71,9 +72,9 @@ class ClientService : Service() {
         stopClient()
         try {
             val client = Client(object : ClientCallbacks {
-                override fun onUpdateNowPlaying(newValue: PlaybackStatus) {
+                override fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {
                     handler.post {
-                        listeners.forEach { it.onUpdateNowPlaying(newValue) }
+                        listeners.forEach { it.onUpdateNowPlaying(newValue, serverTime) }
                     }
                 }
 

@@ -12,6 +12,7 @@ import tpo.mediaplayer.lib_communications.server.ServerCallbacks
 import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.net.InetAddress
+import java.time.Instant
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -56,8 +57,8 @@ private interface ServerCallbacksPrinting : ServerCallbacks {
 }
 
 private interface ClientCallbacksPrinting : ClientCallbacks {
-    override fun onUpdateNowPlaying(newValue: PlaybackStatus) {
-        println("client.onUpdateNowPlaying($newValue)")
+    override fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {
+        println("client.onUpdateNowPlaying($newValue, $serverTime)")
     }
 
     override fun onClose(error: Throwable?) {

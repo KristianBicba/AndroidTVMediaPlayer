@@ -11,6 +11,7 @@ import tpo.mediaplayer.lib_communications.client.ClientMessage
 import tpo.mediaplayer.lib_communications.shared.*
 import java.net.ServerSocket
 import java.net.Socket
+import java.time.Instant
 import kotlin.random.Random
 
 class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
@@ -142,6 +143,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                         null,
                         newStatus.data.timeElapsed,
                         newStatus.data.timeUpdated,
+                        Instant.now(),
                         newStatus.data.status != NowPlaying.Status.PLAYING
                     )
                 } else {
@@ -155,6 +157,7 @@ class Server(private val callbacks: ServerCallbacks) : AutoCloseable {
                             ),
                             newStatus.data.timeElapsed,
                             newStatus.data.timeUpdated,
+                            Instant.now(),
                             newStatus.data.status != NowPlaying.Status.PLAYING
                         )
                         is PlaybackStatus.Error -> ServerMessage.UpdateNowPlaying.NowPlayingType.Error(newStatus.error)

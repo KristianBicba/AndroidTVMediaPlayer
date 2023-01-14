@@ -35,6 +35,8 @@ sealed interface ServerMessage {
                 val timeElapsed: Long,
                 @Serializable(with = InstantAsTimespecSerializer::class)
                 val timeUpdated: Instant,
+                @Serializable(with = InstantAsTimespecSerializer::class)
+                val serverTime: Instant,
                 val isPaused: Boolean
             ) : NowPlayingType {
                 @Serializable

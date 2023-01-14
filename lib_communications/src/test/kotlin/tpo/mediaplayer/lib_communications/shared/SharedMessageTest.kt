@@ -31,6 +31,7 @@ internal class SharedMessageTest {
                     ),
                     1000,
                     Instant.ofEpochSecond(1673211080, 421_000_000),
+                    Instant.ofEpochSecond(1673211080, 421_000_000),
                     false
                 )
             )

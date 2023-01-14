@@ -1,6 +1,7 @@
 package tpo.mediaplayer.lib_communications.client
 
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
+import java.time.Instant
 
 /**
  * Functions that get called in an IO thread. Allowed to perform blocking operations, but not CPU intensive work.
@@ -8,7 +9,7 @@ import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
  */
 interface ClientCallbacks {
     /** Called when the server has sent a new "now playing" update. */
-    fun onUpdateNowPlaying(newValue: PlaybackStatus)
+    fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?)
 
     /**
      * Called when the socket was disconnected, or if there was an error during connection establishment.

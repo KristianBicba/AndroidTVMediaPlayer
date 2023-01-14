@@ -1,6 +1,8 @@
 package tpo.mediaplayer.app_phone.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -16,6 +18,17 @@ import tpo.mediaplayer.app_phone.db.inetAddress
 import tpo.mediaplayer.app_phone.service.ClientService
 import tpo.mediaplayer.lib_communications.shared.NowPlaying
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
+import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
+
+private fun formatMillis(millis: Long): String {
+    val totalSeconds = millis / 1000
+    val totalMinutes = totalSeconds / 60
+    val totalHours = totalMinutes / 60
+    return "%02d:%02d:%02d".format(totalHours, totalMinutes % 60, totalSeconds % 60)
+}
 
 class RemoteControlActivity : AppCompatActivity() {
     private lateinit var vDeviceName: TextView
@@ -37,11 +50,12 @@ class RemoteControlActivity : AppCompatActivity() {
             clientCanStop = false
         }
 
-        override fun onUpdateNowPlaying(newValue: PlaybackStatus) {
-            updateNowPlaying(newValue)
+        override fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {
+            updateNowPlaying(newValue, serverTime)
         }
 
         override fun onClose(error: String?) {
+            abortSeekbarTask()
             if (!clientCanStop) finishWithError(error ?: "Client closed unexpectedly")
         }
     }
@@ -66,7 +80,45 @@ class RemoteControlActivity : AppCompatActivity() {
         binder.createClient(inetAddress)
     }
 
+    private var latestPlaybackStatus: PlaybackStatus? = null
+    private var dragPaused = false
+    private var isDraggingSlider = false
+
+    private val handler by lazy { Handler(mainLooper) }
+
+    private val seekbarTimer = Timer(true)
+    private var seekbarTask: TimerTask? = null
+
+    private fun rescheduleSeekbarTask(elapsed: Long, total: Long, base: Instant = Instant.now()) {
+        seekbarTimer.purge()
+        seekbarTask = object : TimerTask() {
+            val base = base
+
+            override fun run() {
+                handler.post {
+                    if (seekbarTask != this) {
+                        cancel()
+                        return@post
+                    }
+
+                    val sinceBase = Duration.between(this.base, Instant.now()).toMillis()
+                    val nowElapsed = elapsed + sinceBase
+
+                    updateTimer(nowElapsed, total)
+                }
+            }
+        }
+        val nextSecond = Instant.now().plusSeconds(1).truncatedTo(ChronoUnit.SECONDS)
+        seekbarTimer.scheduleAtFixedRate(seekbarTask, Date.from(nextSecond), 100)
+    }
+
+    private fun abortSeekbarTask() {
+        seekbarTimer.purge()
+        seekbarTask = null
+    }
+
     private fun disableControls() {
+        abortSeekbarTask()
         vDeviceName.text = "..."
         vMediaName.visibility = View.GONE
         vMediaName.text = ""
@@ -76,11 +128,12 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonPause.isEnabled = false
         vSeekbar.isEnabled = false
         vSeekbar.value = 0.0f
-        vSeekbarLabel.text = "??/??"
+        vSeekbarLabel.text = "?"
         vButtonOpen.isEnabled = false
     }
 
     private fun idleControls() {
+        abortSeekbarTask()
         vDeviceName.text = device.name
         vMediaName.visibility = View.GONE
         vButtonStop.isEnabled = false
@@ -88,11 +141,19 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonPause.isEnabled = false
         vSeekbar.isEnabled = false
         vSeekbar.value = 0.0f
-        vSeekbarLabel.text = "??/??"
+        vSeekbarLabel.text = "?"
         vButtonOpen.isEnabled = true
     }
 
-    private fun playingControls(playing: NowPlaying) {
+    @SuppressLint("SetTextI18n")
+    private fun updateTimer(elapsed: Long, total: Long) {
+        val fraction = elapsed.toDouble() / total.toDouble()
+        if (!isDraggingSlider || latestPlaybackStatus !is PlaybackStatus.Playing)
+            vSeekbar.value = fraction.toFloat()
+        vSeekbarLabel.text = "${formatMillis(elapsed)}/${formatMillis(total)}"
+    }
+
+    private fun playingControls(playing: NowPlaying, serverTime: Instant?) {
         vDeviceName.text = device.name
         vMediaName.visibility = View.VISIBLE
         vMediaName.text = playing.mediaInfo.mediaName
@@ -101,12 +162,23 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonPlay.isEnabled = playing.status == NowPlaying.Status.PAUSED
         vButtonPause.isEnabled = playing.status == NowPlaying.Status.PLAYING
         vSeekbar.isEnabled = true
-        vSeekbar.value = 0.0f
-        vSeekbarLabel.text = "??/??"
         vButtonOpen.isEnabled = true
+
+        updateTimer(playing.timeElapsed, playing.mediaInfo.timeTotal)
+        if (playing.status == NowPlaying.Status.PLAYING) {
+            rescheduleSeekbarTask(
+                playing.timeElapsed,
+                playing.mediaInfo.timeTotal,
+                if (serverTime != null) playing.timeUpdated.plus(Duration.between(serverTime, Instant.now()))
+                else playing.timeUpdated
+            )
+        } else {
+            abortSeekbarTask()
+        }
     }
 
     private fun errorControls(error: String) {
+        abortSeekbarTask()
         vDeviceName.text = device.name
         vMediaName.visibility = View.VISIBLE
         vMediaName.text = error
@@ -116,7 +188,7 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonPause.isEnabled = false
         vSeekbar.isEnabled = false
         vSeekbar.value = 0.0f
-        vSeekbarLabel.text = "??/??"
+        vSeekbarLabel.text = "?"
         vButtonOpen.isEnabled = true
     }
 
@@ -125,9 +197,10 @@ class RemoteControlActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun updateNowPlaying(newValue: PlaybackStatus) {
+    private fun updateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {
+        latestPlaybackStatus = newValue
         when (newValue) {
-            is PlaybackStatus.Playing -> playingControls(newValue.data)
+            is PlaybackStatus.Playing -> playingControls(newValue.data, serverTime)
             is PlaybackStatus.Error -> errorControls(newValue.error)
             is PlaybackStatus.Idle -> idleControls()
         }
@@ -158,6 +231,36 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonStop.setOnClickListener { client.binder?.stop() }
         vButtonPlay.setOnClickListener { client.binder?.play() }
         vButtonPause.setOnClickListener { client.binder?.pause() }
+
+        vSeekbar.setLabelFormatter {
+            val total = (latestPlaybackStatus as? PlaybackStatus.Playing)?.data?.mediaInfo?.timeTotal
+                ?: return@setLabelFormatter "ERROR"
+            val wouldBeElapsed = (total * it).toLong()
+            formatMillis(wouldBeElapsed)
+        }
+
+        vSeekbar.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                isDraggingSlider = true
+                dragPaused = latestPlaybackStatus.let {
+                    it is PlaybackStatus.Playing && it.data.status == NowPlaying.Status.PLAYING
+                }
+                if (dragPaused) {
+                    client.binder?.pause()
+                }
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                isDraggingSlider = false
+                val total = (latestPlaybackStatus as? PlaybackStatus.Playing)?.data?.mediaInfo?.timeTotal
+                    ?: return
+                val wouldBeElapsed = (total * slider.value).toLong()
+                client.binder?.seek(wouldBeElapsed)
+                if (dragPaused) {
+                    client.binder?.play()
+                }
+            }
+        })
     }
 
     override fun onStart() {

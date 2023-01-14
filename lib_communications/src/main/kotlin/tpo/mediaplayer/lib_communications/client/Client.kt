@@ -18,6 +18,7 @@ import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.time.Instant
 
 interface ClientPairingResult {
     data class Success(val tvName: String) : ClientPairingResult
@@ -128,7 +129,8 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
                     println("Unexpected message: $message")
                     return@withLock
                 }
-                val newStatus: PlaybackStatus = when (val update = message.update) {
+                val update = message.update
+                val newStatus: PlaybackStatus = when (update) {
                     is ServerMessage.UpdateNowPlaying.NowPlayingType.Playing -> {
                         val mediaInfo = update.mediaInfo?.let {
                             NowPlaying.MediaInfo(
@@ -155,7 +157,10 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
                     is ServerMessage.UpdateNowPlaying.NowPlayingType.Idle -> PlaybackStatus.Idle
                 }
                 playbackStatus = newStatus
-                cbUpdateNowPlaying(newStatus)
+                cbUpdateNowPlaying(
+                    newStatus,
+                    (update as? ServerMessage.UpdateNowPlaying.NowPlayingType.Playing)?.serverTime
+                )
             }
         }
     }
@@ -195,8 +200,8 @@ class Client(private val callbacks: ClientCallbacks, connectionAddress: InetAddr
 
     private suspend inline fun <T> io(crossinline block: suspend () -> T) = withContext(Dispatchers.IO) { block() }
 
-    private suspend inline fun cbUpdateNowPlaying(newValue: PlaybackStatus) =
-        io { callbacks.onUpdateNowPlaying(newValue) }
+    private suspend inline fun cbUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) =
+        io { callbacks.onUpdateNowPlaying(newValue, serverTime) }
 
     private suspend inline fun cbClose(error: Throwable?) = io { callbacks.onClose(error) }
 

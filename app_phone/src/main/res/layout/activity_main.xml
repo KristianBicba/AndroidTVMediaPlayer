@@ -12,7 +12,7 @@
         android:layout_height="50dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
-        android:text="@string/seznanjene_naprave_text"
+        android:text="@string/main_button_paired_devices"
         app:layout_constraintBottom_toTopOf="@+id/seznanjeni_strezniki"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -27,7 +27,7 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
-        android:text="@string/seznanjeni_strezniki_text"
+        android:text="@string/main_button_mediaservers"
         app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -42,7 +42,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/video_player_streaming_svgrepo_com" />
+        app:srcCompat="@drawable/video_player_streaming_svgrepo_com"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/buttonConnect"
@@ -52,7 +53,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Connect"
+        android:text="@string/main_button_connect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Streaming App"
+        android:text="@string/main_title"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"

@@ -7,222 +7,94 @@
     tools:context=".activity.RemoteControlActivity">
 
     <Button
-        android:id="@+id/buttonSubtitles"
+        android:id="@+id/buttonStop"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#7E7E7E"
         android:textSize="25sp"
         android:translationZ="1dp"
         app:cornerRadius="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonOptions"
-        app:layout_constraintTop_toTopOf="@+id/buttonOptions" />
-
-    <Button
-        android:id="@+id/buttonOptions"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:backgroundTint="#7E7E7E"
-        android:textSize="25sp"
-        android:translationZ="1dp"
-        app:cornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSubtitles"
+        app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
-
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:backgroundTint="#7E7E7E"
-        android:textSize="25sp"
-        android:translationZ="1dp"
-        app:cornerRadius="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="73dp"
-        android:layout_height="65dp"
-        android:src="@drawable/back_svgrepo_com"
+        android:id="@+id/imageView5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/stop_svgrepo_com"
         android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonBack"
-        app:layout_constraintEnd_toEndOf="@+id/buttonBack"
-        app:layout_constraintStart_toStartOf="@+id/buttonBack"
-        app:layout_constraintTop_toTopOf="@+id/buttonBack" />
+        app:layout_constraintBottom_toBottomOf="@+id/buttonStop"
+        app:layout_constraintEnd_toEndOf="@+id/buttonStop"
+        app:layout_constraintStart_toStartOf="@+id/buttonStop"
+        app:layout_constraintTop_toTopOf="@+id/buttonStop"
+        tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/options_svgrepo_com"
-        android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonOptions"
-        app:layout_constraintEnd_toEndOf="@+id/buttonOptions"
-        app:layout_constraintStart_toStartOf="@+id/buttonOptions"
-        app:layout_constraintTop_toTopOf="@+id/buttonOptions" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="60dp"
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/subtitles_svgrepo_com"
-        android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonSubtitles"
-        app:layout_constraintEnd_toEndOf="@+id/buttonSubtitles"
-        app:layout_constraintStart_toStartOf="@+id/buttonSubtitles"
-        app:layout_constraintTop_toTopOf="@+id/buttonSubtitles" />
+        android:src="@drawable/play_svgrepo_com"
+        android:translationZ="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
+        app:layout_constraintEnd_toEndOf="@+id/buttonPlay"
+        app:layout_constraintStart_toStartOf="@+id/buttonPlay"
+        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        tools:ignore="ContentDescription" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
-        android:layout_width="403dp"
-        android:layout_height="359dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/pause_svgrepo_com"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonPause"
+        app:layout_constraintEnd_toEndOf="@+id/buttonPause"
+        app:layout_constraintStart_toStartOf="@+id/buttonPause"
+        app:layout_constraintTop_toTopOf="@+id/buttonPause"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/buttonPause"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:backgroundTint="#7E7E7E"
+        android:textSize="25sp"
+        android:translationZ="1dp"
+        app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonBack">
+        app:layout_constraintStart_toEndOf="@+id/buttonPlay"
+        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/play_svgrepo_com"
-            android:translationZ="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
-            app:layout_constraintEnd_toEndOf="@+id/buttonPlay"
-            app:layout_constraintStart_toStartOf="@+id/buttonPlay"
-            app:layout_constraintTop_toTopOf="@+id/buttonPlay" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="80dp"
-            android:layout_height="73dp"
-            android:src="@drawable/volume_down_svgrepo_com"
-            android:translationZ="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonVolumeDown"
-            app:layout_constraintEnd_toEndOf="@+id/buttonVolumeDown"
-            app:layout_constraintStart_toStartOf="@+id/buttonVolumeDown"
-            app:layout_constraintTop_toTopOf="@+id/buttonVolumeDown" />
-
-        <Button
-            android:id="@+id/buttonVolumeUp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="#7E7E7E"
-            android:textSize="25sp"
-            android:translationZ="1dp"
-            app:cornerRadius="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonPlay"
-            app:layout_constraintEnd_toEndOf="@+id/buttonPlay"
-            app:layout_constraintStart_toStartOf="@+id/buttonPlay"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/buttonVolumeDown"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="#7E7E7E"
-            android:textSize="25sp"
-            android:translationZ="1dp"
-            app:cornerRadius="25dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/buttonPlay"
-            app:layout_constraintStart_toStartOf="@+id/buttonPlay"
-            app:layout_constraintTop_toBottomOf="@+id/buttonPlay" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/pause_svgrepo_com"
-            android:translationZ="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonPause"
-            app:layout_constraintEnd_toEndOf="@+id/buttonPause"
-            app:layout_constraintStart_toStartOf="@+id/buttonPause"
-            app:layout_constraintTop_toTopOf="@+id/buttonPause" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/stop_svgrepo_com"
-            android:translationZ="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonStop"
-            app:layout_constraintEnd_toEndOf="@+id/buttonStop"
-            app:layout_constraintStart_toStartOf="@+id/buttonStop"
-            app:layout_constraintTop_toTopOf="@+id/buttonStop" />
-
-        <Button
-            android:id="@+id/buttonPause"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="#7E7E7E"
-            android:textSize="25sp"
-            android:translationZ="1dp"
-            app:cornerRadius="25dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonPlay"
-            app:layout_constraintTop_toTopOf="@+id/buttonPlay" />
-
-        <Button
-            android:id="@+id/buttonPlay"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="#7E7E7E"
-            android:textSize="25sp"
-            android:translationZ="1dp"
-            app:cornerRadius="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonVolumeDown"
-            app:layout_constraintEnd_toStartOf="@+id/buttonPause"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonStop"
-            app:layout_constraintTop_toBottomOf="@+id/buttonVolumeUp" />
-
-        <Button
-            android:id="@+id/buttonStop"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="#7E7E7E"
-            android:textSize="25sp"
-            android:translationZ="1dp"
-            app:cornerRadius="25dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
-            app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/buttonPlay" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/volume_up_svgrepo_com"
-            android:translationZ="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonVolumeUp"
-            app:layout_constraintEnd_toEndOf="@+id/buttonVolumeUp"
-            app:layout_constraintStart_toStartOf="@+id/buttonVolumeUp"
-            app:layout_constraintTop_toTopOf="@+id/buttonVolumeUp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:backgroundTint="#7E7E7E"
+        android:textSize="25sp"
+        android:translationZ="1dp"
+        app:cornerRadius="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/buttonPause"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonStop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="410dp"
         android:layout_height="82dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonOptions"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlay">
 
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderBar"
@@ -232,22 +104,22 @@
             app:haloColor="#434343"
             app:layout_constraintBottom_toTopOf="@+id/textViewSlider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:thumbColor="#000000"
             app:tickColorInactive="#2E2E2E"
             app:trackColorActive="#878787"
-            app:trackColorInactive="#8E8E8E" />
+            app:trackColorInactive="#8E8E8E"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/textViewSlider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00/00:00"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sliderBar" />
+            app:layout_constraintTop_toBottomOf="@+id/sliderBar"
+            tools:text="00:00/00:00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

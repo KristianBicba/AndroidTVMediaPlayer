@@ -1,19 +1,16 @@
 <resources>
-    <string name="app_name">TPOapp</string>
-    <string name="mainScreenText">Pozdravljeni v naši aplikaciji ShareAndWatch</string>
-    <string name="dodaj_napravo_text">Dodaj napravo</string>
-    <string name="dodaj_streznik_text">Dodaj streznik</string>
-    <string name="seznanjene_naprave_text">Seznanjene naprave</string>
-    <string name="seznanjeni_strezniki_text">Seznanjeni strezniki</string>
-    <string name="seznanjene_naprave_screen">SEZNANJENE_NAPRAVE_SCREEN</string>
-    <string name="neki_2">NEKI 2</string>
-    <string name="_1">1</string>
-    <string name="neki_4">NEKI 4</string>
-    <string name="edit_device_button">EDIT</string>
-    <string name="add_device_button">ADD</string>
-    <string name="remove_device_button">REMOVE</string>
-    <string name="id_naprava_text">ID</string>
-    <string name="info_naprava_text">Info</string>
-    <string name="update_button_text">update button</string>
-    <string name="delete_button_text">delete button</string>/>
+    <string name="app_name">Media player remote control</string>
+    <string name="main_title">Remote control</string>
+    <string name="main_button_paired_devices">Edit paired devices</string>
+    <string name="main_button_mediaservers">Edit media servers</string>
+    <string name="main_button_connect">Connect</string>
+    <string name="no_data">No Data</string>
+    <string name="edit_paired_devices_title">Paired devices</string>
+    <string name="edit_mediaservers_title">Media servers</string>
+    <string name="edit_mediaserver_details_title_add">Add server</string>
+    <string name="edit_mediaserver_details_title_edit">Edit server</string>
+    <string name="edit_mediaserver_details_button_commit_add">Add server</string>
+    <string name="edit_mediaserver_details_button_commit_edit">Edit server</string>
+    <string name="edit_mediaserver_details_button_remove">Remove server</string>
+    <string name="edit_mediaserver_details_hint_name">Name</string>
 </resources>

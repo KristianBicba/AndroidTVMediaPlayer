@@ -1,6 +1,5 @@
 package tpo.mediaplayer.app_phone.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -20,15 +19,14 @@ class EditMediaServerDetailsActivity : AppCompatActivity() {
 
     private var uid: Int? = null
 
-    @SuppressLint("SetTextI18n")
     private fun adjustIfEditing() {
         val uid = intent.getIntExtra("uid", 0)
         if (uid == 0) return
 
         val mediaServer = GodObject.instance.db.mediaServerDao().getMediaServerByUid(uid) ?: return
         this.uid = uid
-        vScreenTitle.text = "Edit Server"
-        vButtonCommit.text = "EDIT SERVER"
+        vScreenTitle.text = resources.getString(R.string.edit_mediaserver_details_title_edit)
+        vButtonCommit.text = resources.getString(R.string.edit_mediaserver_details_button_commit_edit)
         vButtonRemove.visibility = View.VISIBLE
         vEditName.setText(mediaServer.name)
         vEditConnectionString.setText(mediaServer.connectionString)

@@ -11,13 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Add Server"
+        android:text="@string/edit_mediaserver_details_title_add"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonAddServer"
@@ -25,12 +24,12 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
-        android:text="ADD SERVER"
+        android:text="@string/edit_mediaserver_details_button_commit_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:ignore="HardcodedText" />
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
         android:id="@+id/buttonRemoveServer"
@@ -38,12 +37,11 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
-        android:text="REMOVE SERVER"
+        android:text="@string/edit_mediaserver_details_button_remove"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddServer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="HardcodedText"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,13 +58,13 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:hint="Name"
+            android:hint="@string/edit_mediaserver_details_hint_name"
             app:layout_constraintBottom_toTopOf="@+id/textInputConnectionString"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:ignore="HardcodedText" />
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputConnectionString"
@@ -79,6 +77,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputName"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

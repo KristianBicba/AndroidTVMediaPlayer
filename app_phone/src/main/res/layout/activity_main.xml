@@ -7,46 +7,46 @@
     tools:context=".activity.MainActivity">
 
     <Button
-        android:id="@+id/seznanjene_naprave"
+        android:id="@+id/main_button_paired_devices"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/main_button_paired_devices"
-        app:layout_constraintBottom_toTopOf="@+id/seznanjeni_strezniki"
+        app:layout_constraintBottom_toTopOf="@+id/main_button_mediaservers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/main_img_icon"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
-        android:id="@+id/seznanjeni_strezniki"
+        android:id="@+id/main_button_mediaservers"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/main_button_mediaservers"
-        app:layout_constraintBottom_toTopOf="@+id/buttonConnect"
+        app:layout_constraintBottom_toTopOf="@+id/main_button_connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seznanjene_naprave" />
+        app:layout_constraintTop_toBottomOf="@+id/main_button_paired_devices" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/main_img_icon"
         android:layout_width="253dp"
         android:layout_height="316dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/main_text_title"
         app:srcCompat="@drawable/video_player_streaming_svgrepo_com"
         tools:ignore="ContentDescription" />
 
     <Button
-        android:id="@+id/buttonConnect"
+        android:id="@+id/main_button_connect"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -57,17 +57,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seznanjeni_strezniki" />
+        app:layout_constraintTop_toBottomOf="@+id/main_button_mediaservers" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/main_text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/main_title"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/main_img_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

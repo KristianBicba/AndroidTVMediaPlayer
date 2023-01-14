@@ -32,10 +32,10 @@ class EditMediaServersActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        vMediaServerList = findViewById(R.id.recyclerViewServer)
-        vNoMediaServersImage = findViewById(R.id.empty_image_view)
-        vNoMediaServersText = findViewById(R.id.empty_data_text)
-        vAddMediaServer = findViewById(R.id.add_server)
+        vMediaServerList = findViewById(R.id.edit_mediaservers_list)
+        vNoMediaServersImage = findViewById(R.id.edit_mediaservers_img_nodata)
+        vNoMediaServersText = findViewById(R.id.edit_mediaservers_text_nodata)
+        vAddMediaServer = findViewById(R.id.edit_mediaservers_button_add)
 
         vAddMediaServer.setOnClickListener { addOrEditMediaServer() }
 

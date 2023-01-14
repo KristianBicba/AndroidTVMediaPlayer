@@ -36,9 +36,9 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         supportActionBar?.hide()
 
-        vEditDevices = findViewById(R.id.seznanjene_naprave)
-        vEditMediaServers = findViewById(R.id.seznanjeni_strezniki)
-        vConnect = findViewById(R.id.buttonConnect)
+        vEditDevices = findViewById(R.id.main_button_paired_devices)
+        vEditMediaServers = findViewById(R.id.main_button_mediaservers)
+        vConnect = findViewById(R.id.main_button_connect)
 
         vEditDevices.setOnClickListener {
             val intent = Intent(this, EditPairedDevicesActivity::class.java)

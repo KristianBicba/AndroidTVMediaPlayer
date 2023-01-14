@@ -49,11 +49,11 @@ class EditMediaServerDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        vScreenTitle = findViewById(R.id.textView4)
-        vButtonCommit = findViewById(R.id.buttonAddServer)
-        vButtonRemove = findViewById(R.id.buttonRemoveServer)
-        vEditName = findViewById(R.id.textInputName)
-        vEditConnectionString = findViewById(R.id.textInputConnectionString)
+        vScreenTitle = findViewById(R.id.edit_mediaserver_details_text_title)
+        vButtonCommit = findViewById(R.id.edit_mediaserver_details_button_commit)
+        vButtonRemove = findViewById(R.id.edit_mediaserver_details_button_remove)
+        vEditName = findViewById(R.id.edit_mediaserver_details_edit_name)
+        vEditConnectionString = findViewById(R.id.edit_mediaserver_details_edit_connstring)
 
         adjustIfEditing()
 

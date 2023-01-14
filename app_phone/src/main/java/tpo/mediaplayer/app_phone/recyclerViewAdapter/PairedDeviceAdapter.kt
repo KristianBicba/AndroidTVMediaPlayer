@@ -46,9 +46,9 @@ class PairedDeviceAdapter(private val onClick: (Device) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val deviceId: TextView = view.findViewById(R.id.device_id)
-        val deviceName: TextView = view.findViewById(R.id.device_name)
-        val deviceInfo: TextView = view.findViewById(R.id.device_info)
-        val container: LinearLayout = view.findViewById(R.id.update_layout)
+        val deviceId: TextView = view.findViewById(R.id.row_device_text_id)
+        val deviceName: TextView = view.findViewById(R.id.row_device_text_name)
+        val deviceInfo: TextView = view.findViewById(R.id.row_device_text_info)
+        val container: LinearLayout = view.findViewById(R.id.row_device_container)
     }
 }

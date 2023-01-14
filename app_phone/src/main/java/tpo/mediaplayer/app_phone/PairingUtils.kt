@@ -12,9 +12,9 @@ fun attemptPairing(data: PairingData, myGuid: String, context: Context) {
         val result = attemptToPair(data, GodObject.instance.deviceName, myGuid)
         Handler(context.mainLooper).post {
             if (result == null) {
-                Toast.makeText(context, context.getString(R.string.pairing_status_success), Toast.LENGTH_SHORT).show()
-            } else {
                 Toast.makeText(context, context.getString(R.string.pairing_status_failure), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, context.getString(R.string.pairing_status_success), Toast.LENGTH_SHORT).show()
                 GodObject.instance.db.deviceDao().insertDevice(
                     Device(0, result.name, hexEncode(result.address.address))
                 )

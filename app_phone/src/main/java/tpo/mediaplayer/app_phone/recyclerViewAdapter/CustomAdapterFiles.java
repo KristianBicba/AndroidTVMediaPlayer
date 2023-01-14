@@ -78,7 +78,7 @@ public class CustomAdapterFiles extends RecyclerView.Adapter<CustomAdapterFiles.
         public MyViewHolderFiles(@NonNull View itemView) {
             super(itemView);
             files = itemView.findViewById(R.id.file_name);
-            update_layout = itemView.findViewById(R.id.update_layout);
+            update_layout = itemView.findViewById(R.id.row_device_container);
         }
     }
 }

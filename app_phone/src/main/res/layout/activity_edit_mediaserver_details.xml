@@ -7,19 +7,19 @@
     tools:context=".activity.EditMediaServerDetailsActivity">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/edit_mediaserver_details_text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/edit_mediaserver_details_title_add"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toTopOf="@+id/edit_mediaserver_details_layout_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonAddServer"
+        android:id="@+id/edit_mediaserver_details_button_commit"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/cardview_dark_background"
@@ -28,38 +28,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/edit_mediaserver_details_layout_buttons"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
-        android:id="@+id/buttonRemoveServer"
+        android:id="@+id/edit_mediaserver_details_button_remove"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/edit_mediaserver_details_button_remove"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAddServer"
+        app:layout_constraintBottom_toTopOf="@+id/edit_mediaserver_details_button_commit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="409dp"
+        android:id="@+id/edit_mediaserver_details_layout_buttons"
+        android:layout_width="0dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAddServer"
+        app:layout_constraintBottom_toTopOf="@+id/edit_mediaserver_details_button_commit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/edit_mediaserver_details_text_title">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputName"
+            android:id="@+id/edit_mediaserver_details_edit_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:hint="@string/edit_mediaserver_details_hint_name"
-            app:layout_constraintBottom_toTopOf="@+id/textInputConnectionString"
+            app:layout_constraintBottom_toTopOf="@+id/edit_mediaserver_details_edit_connstring"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +67,7 @@
             tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputConnectionString"
+            android:id="@+id/edit_mediaserver_details_edit_connstring"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -76,7 +76,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputName"
+            app:layout_constraintTop_toBottomOf="@+id/edit_mediaserver_details_edit_name"
             tools:ignore="HardcodedText,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

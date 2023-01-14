@@ -34,9 +34,9 @@ class MediaServerAdapter(private val onClick: (MediaServer) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val id: TextView = view.findViewById(R.id.server_id)
-        val name: TextView = view.findViewById(R.id.username)
-        val path: TextView = view.findViewById(R.id.path)
-        val container: LinearLayout = view.findViewById(R.id.update_layout)
+        val id: TextView = view.findViewById(R.id.row_mediaserver_text_id)
+        val name: TextView = view.findViewById(R.id.row_mediaserver_text_name)
+        val path: TextView = view.findViewById(R.id.row_mediaserver_text_info)
+        val container: LinearLayout = view.findViewById(R.id.row_mediaserver_container)
     }
 }

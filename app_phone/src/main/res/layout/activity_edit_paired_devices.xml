@@ -2,50 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/add_button"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/edit_paired_devices_list"
         android:layout_width="385dp"
         android:layout_height="500dp"
         android:layout_marginBottom="48dp"
         android:fastScrollEnabled="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/add_device"
+        app:layout_constraintBottom_toTopOf="@+id/edit_paired_devices_button_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/empty_image_view"
+        android:id="@+id/edit_paired_devices_img_nodata"
         android:layout_width="112dp"
         android:layout_height="108dp"
         android:alpha="0.4"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+        app:layout_constraintTop_toTopOf="@+id/edit_paired_devices_list"
         app:srcCompat="@drawable/empty"
         tools:ignore="ContentDescription,ImageContrastCheck"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/empty_data_text"
+        android:id="@+id/edit_paired_devices_text_nodata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/no_data"
         android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/empty_image_view"
-        app:layout_constraintStart_toStartOf="@+id/empty_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/empty_image_view"
+        app:layout_constraintEnd_toEndOf="@+id/edit_paired_devices_img_nodata"
+        app:layout_constraintStart_toStartOf="@+id/edit_paired_devices_img_nodata"
+        app:layout_constraintTop_toBottomOf="@+id/edit_paired_devices_img_nodata"
         tools:visibility="visible" />
 
     <Button
-        android:id="@+id/add_device"
+        android:id="@+id/edit_paired_devices_button_add"
         android:layout_width="72dp"
         android:layout_height="70dp"
         android:layout_marginEnd="16dp"
@@ -59,15 +58,14 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/edit_paired_devices_text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/edit_paired_devices_title"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/edit_paired_devices_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

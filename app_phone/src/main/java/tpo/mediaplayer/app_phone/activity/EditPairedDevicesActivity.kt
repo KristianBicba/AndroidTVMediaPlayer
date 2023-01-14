@@ -72,10 +72,10 @@ class EditPairedDevicesActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        vDeviceList = findViewById(R.id.recyclerView)
-        vNoDevicesImage = findViewById(R.id.empty_image_view)
-        vNoDevicesText = findViewById(R.id.empty_data_text)
-        vAddDevice = findViewById(R.id.add_device)
+        vDeviceList = findViewById(R.id.edit_paired_devices_list)
+        vNoDevicesImage = findViewById(R.id.edit_paired_devices_img_nodata)
+        vNoDevicesText = findViewById(R.id.edit_paired_devices_text_nodata)
+        vAddDevice = findViewById(R.id.edit_paired_devices_button_add)
 
         vAddDevice.setOnClickListener { scanDevice() }
 

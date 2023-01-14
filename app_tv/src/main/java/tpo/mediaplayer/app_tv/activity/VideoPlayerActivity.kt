@@ -21,6 +21,8 @@ private val Player.isPlayingOrBuffering
     get() = playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_READY
 
 class VideoPlayerActivity : AppCompatActivity() {
+    private lateinit var vPlayerView: StyledPlayerView
+
     private val server by lazy {
         object : AbstractBinder<MainServerService.LocalBinder>(this, MainServerService::class.java) {
             override fun onBind(binder: MainServerService.LocalBinder) {
@@ -144,14 +146,14 @@ class VideoPlayerActivity : AppCompatActivity() {
             .also { this.player = it }
         player.addListener(playerListener)
 
-        findViewById<StyledPlayerView>(R.id.idExoPlayerVIew).player = player
+        vPlayerView.player = player
     }
 
     private fun releasePlayer() {
         val player = player ?: return
 
         player.stop()
-        findViewById<StyledPlayerView>(R.id.idExoPlayerVIew).player = null
+        vPlayerView.player = null
         player.release()
 
         this.player = null
@@ -170,6 +172,9 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_player)
+
+        vPlayerView = findViewById(R.id.idExoPlayerVIew)
+        vPlayerView.controllerAutoShow = false
     }
 
     override fun onStart() {

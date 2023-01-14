@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import tpo.mediaplayer.app_phone.R
 import tpo.mediaplayer.app_phone.db.Device
-import tpo.mediaplayer.app_phone.hexDecode
-import java.io.IOException
-import java.net.InetAddress
+import tpo.mediaplayer.app_phone.db.inetAddress
 
 private object DeviceDiffCallback : DiffUtil.ItemCallback<Device>() {
     override fun areItemsTheSame(oldItem: Device, newItem: Device) = oldItem == newItem
@@ -32,16 +30,7 @@ class PairedDeviceAdapter(private val onClick: (Device) -> Unit) :
         val device = getItem(position)!!
         holder.deviceId.text = device.uid.toString()
         holder.deviceName.text = device.name
-        holder.deviceInfo.text = kotlin.run {
-            val hexEncodedInetAddress = device.address
-            val bytestreamInetAddress = hexDecode(hexEncodedInetAddress) ?: return@run null
-            val actualInetAddress = try {
-                InetAddress.getByAddress(bytestreamInetAddress)
-            } catch (_: IOException) {
-                return@run null
-            }
-            actualInetAddress.toString()
-        } ?: "ERROR"
+        holder.deviceInfo.text = device.inetAddress?.toString() ?: "ERROR"
         holder.container.setOnClickListener { onClick(device) }
     }
 

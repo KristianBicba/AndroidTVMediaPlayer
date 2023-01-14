@@ -140,12 +140,13 @@
 
     <TextView
         android:id="@+id/remote_control_text_media"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:textColor="@android:color/primary_text_light"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/remote_control_button_play"
+        app:layout_constraintEnd_toEndOf="@+id/remote_control_button_pause"
         app:layout_constraintStart_toStartOf="@+id/remote_control_button_stop"
         app:layout_constraintTop_toBottomOf="@+id/remote_control_text_device"
         app:layout_constraintVertical_chainStyle="packed"

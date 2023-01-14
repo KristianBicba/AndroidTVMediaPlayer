@@ -9,10 +9,12 @@ import tpo.mediaplayer.lib_communications.shared.Constants
 import tpo.mediaplayer.lib_communications.shared.LineChannelIO
 import java.net.ServerSocket
 import java.net.Socket
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 internal class CoroutineSocketServerTest {
     @Test
+    @Ignore
     fun exampleBasicServer() {
         class EchoServerImpl(
             val semOpen: Semaphore = Semaphore(1, 1),

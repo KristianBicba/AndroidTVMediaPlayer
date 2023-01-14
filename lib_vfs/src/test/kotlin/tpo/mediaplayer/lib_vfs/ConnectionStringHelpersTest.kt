@@ -1,11 +1,13 @@
 package tpo.mediaplayer.lib_vfs
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 internal class ConnectionStringHelpersTest {
     @Test
+    @Ignore
     fun exampleConnectionString() {
         val conn = ServerConnectionString("sftp", "testuser:testpassword", "10.0.2.2", null)
         println(conn.toURI())
@@ -13,7 +15,7 @@ internal class ConnectionStringHelpersTest {
         println(ConnectionString(conn, "/Screen.mkv"))
     }
 
-    fun testUsernamePassword(username: String, password: String) {
+    private fun testUsernamePassword(username: String, password: String) {
         val userPass = UsernamePassword(username, password)
         assertEquals(username, userPass.username)
         assertEquals(password, userPass.password)

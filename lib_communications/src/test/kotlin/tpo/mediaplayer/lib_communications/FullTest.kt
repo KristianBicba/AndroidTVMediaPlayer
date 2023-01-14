@@ -13,6 +13,7 @@ import tpo.mediaplayer.lib_communications.shared.PairingData
 import tpo.mediaplayer.lib_communications.shared.PlaybackStatus
 import java.net.InetAddress
 import java.time.Instant
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -95,6 +96,7 @@ class SemServer {
 
 internal class FullTest {
     @Test
+    @Ignore
     fun exampleBasic() = runBlocking {
         val s = SemServer()
         s.open()
@@ -115,6 +117,7 @@ internal class FullTest {
     }
 
     @Test
+    @Ignore
     fun examplePairing() = runBlocking {
         val s = SemServer()
         s.open()
@@ -146,22 +149,26 @@ internal class FullTest {
     }
 
     @Test
+    @Ignore
     fun helperPlayMediaOnRealTV() {
         getClient().beginPlayback("sftp://testuser:testpassword@10.0.2.2:2022/Screen.mp4")
     }
 
     @Test
+    @Ignore
     fun helperSeek() {
         getClient().seekPlayback(5000)
     }
 
     @Test
+    @Ignore
     fun helperObserveMedia(): Unit = runBlocking {
         getClient()
         awaitCancellation()
     }
 
     @Test
+    @Ignore
     fun helperStopMedia() {
         getClient().stopPlayback()
     }

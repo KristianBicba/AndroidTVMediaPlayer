@@ -20,4 +20,5 @@
     <string name="edit_mediaserver_details_button_commit_edit">Edit server</string>
     <string name="edit_mediaserver_details_button_remove">Remove server</string>
     <string name="edit_mediaserver_details_hint_name">Name</string>
+    <string name="remote_control_button_open">Open file</string>
 </resources>

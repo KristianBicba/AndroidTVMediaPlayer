@@ -7,57 +7,57 @@
     tools:context=".activity.RemoteControlActivity">
 
     <Button
-        android:id="@+id/buttonStop"
+        android:id="@+id/remote_control_button_stop"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#7E7E7E"
         android:textSize="25sp"
         android:translationZ="1dp"
         app:cornerRadius="25dp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
+        app:layout_constraintEnd_toStartOf="@+id/remote_control_button_play"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        app:layout_constraintTop_toTopOf="@+id/remote_control_button_play"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/remote_control_img_stop"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/stop_svgrepo_com"
         android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonStop"
-        app:layout_constraintEnd_toEndOf="@+id/buttonStop"
-        app:layout_constraintStart_toStartOf="@+id/buttonStop"
-        app:layout_constraintTop_toTopOf="@+id/buttonStop"
+        app:layout_constraintBottom_toBottomOf="@+id/remote_control_button_stop"
+        app:layout_constraintEnd_toEndOf="@+id/remote_control_button_stop"
+        app:layout_constraintStart_toStartOf="@+id/remote_control_button_stop"
+        app:layout_constraintTop_toTopOf="@+id/remote_control_button_stop"
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/remote_control_img_play"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/play_svgrepo_com"
         android:translationZ="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
-        app:layout_constraintEnd_toEndOf="@+id/buttonPlay"
-        app:layout_constraintStart_toStartOf="@+id/buttonPlay"
-        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        app:layout_constraintBottom_toBottomOf="@+id/remote_control_button_play"
+        app:layout_constraintEnd_toEndOf="@+id/remote_control_button_play"
+        app:layout_constraintStart_toStartOf="@+id/remote_control_button_play"
+        app:layout_constraintTop_toTopOf="@+id/remote_control_button_play"
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/remote_control_img_pause"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/pause_svgrepo_com"
         android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonPause"
-        app:layout_constraintEnd_toEndOf="@+id/buttonPause"
-        app:layout_constraintStart_toStartOf="@+id/buttonPause"
-        app:layout_constraintTop_toTopOf="@+id/buttonPause"
+        app:layout_constraintBottom_toBottomOf="@+id/remote_control_button_pause"
+        app:layout_constraintEnd_toEndOf="@+id/remote_control_button_pause"
+        app:layout_constraintStart_toStartOf="@+id/remote_control_button_pause"
+        app:layout_constraintTop_toTopOf="@+id/remote_control_button_pause"
         tools:ignore="ContentDescription" />
 
     <Button
-        android:id="@+id/buttonPause"
+        android:id="@+id/remote_control_button_pause"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#7E7E7E"
@@ -66,43 +66,44 @@
         app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonPlay"
-        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        app:layout_constraintStart_toEndOf="@+id/remote_control_button_play"
+        app:layout_constraintTop_toTopOf="@+id/remote_control_button_play"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/buttonPlay"
+        android:id="@+id/remote_control_button_play"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="#7E7E7E"
         android:textSize="25sp"
         android:translationZ="1dp"
         app:cornerRadius="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-        app:layout_constraintEnd_toStartOf="@+id/buttonPause"
+        app:layout_constraintBottom_toTopOf="@+id/remote_control_container_seekbar"
+        app:layout_constraintEnd_toStartOf="@+id/remote_control_button_pause"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonStop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/remote_control_button_stop"
+        app:layout_constraintTop_toBottomOf="@+id/remote_control_text_media"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
+        android:id="@+id/remote_control_container_seekbar"
         android:layout_width="410dp"
         android:layout_height="82dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/remote_control_button_open"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPlay">
+        app:layout_constraintTop_toBottomOf="@+id/remote_control_button_play">
 
         <com.google.android.material.slider.Slider
-            android:id="@+id/sliderBar"
+            android:id="@+id/remote_control_slider_seekbar"
             android:layout_width="366dp"
             android:layout_height="50dp"
             android:backgroundTint="#7E7E7E"
             app:haloColor="#434343"
-            app:layout_constraintBottom_toTopOf="@+id/textViewSlider"
+            app:layout_constraintBottom_toTopOf="@+id/remote_control_text_seekbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -113,13 +114,56 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
-            android:id="@+id/textViewSlider"
+            android:id="@+id/remote_control_text_seekbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sliderBar"
+            app:layout_constraintTop_toBottomOf="@+id/remote_control_slider_seekbar"
             tools:text="00:00/00:00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/remote_control_button_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/remote_control_button_open"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remote_control_container_seekbar" />
+
+    <TextView
+        android:id="@+id/remote_control_text_media"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/remote_control_button_play"
+        app:layout_constraintStart_toStartOf="@+id/remote_control_button_stop"
+        app:layout_constraintTop_toBottomOf="@+id/remote_control_text_device"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Blah blah movie" />
+
+    <TextView
+        android:id="@+id/remote_control_text_device"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Example TV name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

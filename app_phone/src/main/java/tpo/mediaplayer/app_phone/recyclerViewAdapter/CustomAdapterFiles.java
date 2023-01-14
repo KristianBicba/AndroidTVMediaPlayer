@@ -39,7 +39,7 @@ public class CustomAdapterFiles extends RecyclerView.Adapter<CustomAdapterFiles.
     @Override
     public MyViewHolderFiles onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.my_row_file, parent, false);
+        View view = inflater.inflate(R.layout.row_file, parent, false);
         return new MyViewHolderFiles(view);
     }
 
@@ -77,8 +77,8 @@ public class CustomAdapterFiles extends RecyclerView.Adapter<CustomAdapterFiles.
 
         public MyViewHolderFiles(@NonNull View itemView) {
             super(itemView);
-            files = itemView.findViewById(R.id.file_name);
-            update_layout = itemView.findViewById(R.id.row_device_container);
+            files = itemView.findViewById(R.id.row_file_text_name);
+            update_layout = itemView.findViewById(R.id.row_file_container);
         }
     }
 }

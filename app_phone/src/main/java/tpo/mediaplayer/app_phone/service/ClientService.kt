@@ -43,6 +43,7 @@ class ClientService : Service() {
         }
 
         fun play(connectionString: String) {
+            client?.stopPlayback()
             client?.beginPlayback(connectionString)
         }
 

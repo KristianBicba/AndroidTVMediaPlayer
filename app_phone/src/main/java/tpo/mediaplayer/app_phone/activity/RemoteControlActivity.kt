@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -49,10 +50,12 @@ class RemoteControlActivity : AppCompatActivity() {
 
     private var intentUid = 0
     private lateinit var device: Device
+    private var playOnStart: String? = null
 
     private val listener = object : ClientService.Listener {
         override fun onOpen() {
             clientCanStop = false
+            playOnStartIfNeeded()
         }
 
         override fun onUpdateNowPlaying(newValue: PlaybackStatus, serverTime: Instant?) {
@@ -233,6 +236,7 @@ class RemoteControlActivity : AppCompatActivity() {
                 val intent = Intent(this, FileSystemActivity::class.java).apply {
                     putExtra("connection_string", mapping[it]!!.connectionString)
                     putExtra("path", "/")
+                    putExtra("server_uid", intentUid)
                 }
                 startActivity(intent)
                 true
@@ -240,6 +244,24 @@ class RemoteControlActivity : AppCompatActivity() {
 
             popup.show()
         }
+    }
+
+    private fun playOnStartIfNeeded() {
+        val playOnStart = playOnStart ?: return
+        client.binder?.play(playOnStart)
+        this.playOnStart = null
+    }
+
+    private fun playIntentFile(savedInstanceState: Bundle?) {
+        if (savedInstanceState?.getBoolean("path_was_played") == true) return
+        val connectionString = intent.getStringExtra("connection_string_path") ?: return
+        playOnStart = connectionString
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        if (intent.hasExtra("connection_string_path"))
+            outState.putBoolean("path_was_played", true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -299,6 +321,7 @@ class RemoteControlActivity : AppCompatActivity() {
         })
 
         setUpOpenButton()
+        playIntentFile(savedInstanceState)
     }
 
     override fun onStart() {

@@ -1,5 +1,6 @@
 package tpo.mediaplayer.app_phone.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -20,8 +21,9 @@ class FileSystemActivity : AppCompatActivity() {
     private lateinit var vError: TextView
     private lateinit var vFiles: RecyclerView
 
-    private lateinit var connectionString: String
-    private lateinit var path: String
+    private lateinit var intentConnectionString: String
+    private lateinit var intentPath: String
+    private var intentServerUid: Int = 0
 
     private var stopped = false
         @Synchronized get
@@ -67,7 +69,7 @@ class FileSystemActivity : AppCompatActivity() {
 
     private fun initializeVfs() {
         val vfs = try {
-            DefaultFileSystemFactory.build(connectionString)
+            DefaultFileSystemFactory.build(intentConnectionString)
         } catch (e: IOException) {
             handler.post { updateErrorConnect(e.toString()) }
             return
@@ -78,7 +80,7 @@ class FileSystemActivity : AppCompatActivity() {
         }
         this.vfs = vfs
         if (stopped) return vfs.close()
-        val result = vfs.ls(path)
+        val result = vfs.ls(intentPath)
         if (result != null) {
             handler.post { updateSuccess(result) }
             return
@@ -99,12 +101,31 @@ class FileSystemActivity : AppCompatActivity() {
         vError = findViewById(R.id.file_system_text_error)
         vFiles = findViewById(R.id.file_system_list)
 
-        connectionString = intent.getStringExtra("connection_string") ?: return finish()
-        path = intent.getStringExtra("path") ?: return finish()
+        intentConnectionString = intent.getStringExtra("connection_string") ?: return finish()
+        intentPath = intent.getStringExtra("path") ?: return finish()
+        intentServerUid = intent.getIntExtra("server_uid", 0).also {
+            if (it == 0) return finish()
+        }
 
-        vPath.text = path
+        vPath.text = intentPath
 
-        adapter = FileSystemAdapter { println(it.path) }
+        adapter = FileSystemAdapter {
+            if (it.isDirectory) {
+                val intent = Intent(this, FileSystemActivity::class.java).apply {
+                    putExtra("connection_string", intentConnectionString)
+                    putExtra("path", it.path)
+                    putExtra("server_uid", intentServerUid)
+                }
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, RemoteControlActivity::class.java).apply {
+                    putExtra("server_uid", intentServerUid)
+                    putExtra("connection_string_path", it.connectionString)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+                startActivity(intent)
+            }
+        }
         vFiles.adapter = adapter
     }
 

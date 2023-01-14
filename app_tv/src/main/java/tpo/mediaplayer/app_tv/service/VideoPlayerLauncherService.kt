@@ -34,6 +34,7 @@ class VideoPlayerLauncherService : LifecycleService() {
 
     private fun launchMainActivity(connectionString: String) {
         val intent = Intent(this, VideoPlayerActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra("uri", connectionString)
         }

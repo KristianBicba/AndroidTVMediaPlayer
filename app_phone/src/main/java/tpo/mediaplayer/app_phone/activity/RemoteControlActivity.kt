@@ -1,10 +1,13 @@
 package tpo.mediaplayer.app_phone.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,7 @@ import tpo.mediaplayer.app_phone.AbstractBinder
 import tpo.mediaplayer.app_phone.GodObject
 import tpo.mediaplayer.app_phone.R
 import tpo.mediaplayer.app_phone.db.Device
+import tpo.mediaplayer.app_phone.db.MediaServer
 import tpo.mediaplayer.app_phone.db.inetAddress
 import tpo.mediaplayer.app_phone.service.ClientService
 import tpo.mediaplayer.lib_communications.shared.NowPlaying
@@ -40,6 +44,7 @@ class RemoteControlActivity : AppCompatActivity() {
     private lateinit var vSeekbarLabel: TextView
     private lateinit var vButtonOpen: Button
 
+    private var openButtonEnabled = false
     private var textPrimaryColor: Int = 0
 
     private var intentUid = 0
@@ -142,7 +147,7 @@ class RemoteControlActivity : AppCompatActivity() {
         vSeekbar.isEnabled = false
         vSeekbar.value = 0.0f
         vSeekbarLabel.text = "?"
-        vButtonOpen.isEnabled = true
+        vButtonOpen.isEnabled = openButtonEnabled
     }
 
     @SuppressLint("SetTextI18n")
@@ -162,7 +167,7 @@ class RemoteControlActivity : AppCompatActivity() {
         vButtonPlay.isEnabled = playing.status == NowPlaying.Status.PAUSED
         vButtonPause.isEnabled = playing.status == NowPlaying.Status.PLAYING
         vSeekbar.isEnabled = true
-        vButtonOpen.isEnabled = true
+        vButtonOpen.isEnabled = openButtonEnabled
 
         updateTimer(playing.timeElapsed, playing.mediaInfo.timeTotal)
         if (playing.status == NowPlaying.Status.PLAYING) {
@@ -189,7 +194,7 @@ class RemoteControlActivity : AppCompatActivity() {
         vSeekbar.isEnabled = false
         vSeekbar.value = 0.0f
         vSeekbarLabel.text = "?"
-        vButtonOpen.isEnabled = true
+        vButtonOpen.isEnabled = openButtonEnabled
     }
 
     private fun finishWithError(error: String) {
@@ -203,6 +208,37 @@ class RemoteControlActivity : AppCompatActivity() {
             is PlaybackStatus.Playing -> playingControls(newValue.data, serverTime)
             is PlaybackStatus.Error -> errorControls(newValue.error)
             is PlaybackStatus.Idle -> idleControls()
+        }
+    }
+
+    private fun setUpOpenButton() {
+        val mediaServers = GodObject.instance.db.mediaServerDao().getAllMediaServers()
+
+        if (mediaServers.isEmpty()) {
+            openButtonEnabled = false
+            return
+        }
+
+        openButtonEnabled = true
+
+        vButtonOpen.setOnClickListener {
+            val mapping = mutableMapOf<MenuItem, MediaServer>()
+            val popup = PopupMenu(this, vButtonOpen)
+            for (mediaServer in mediaServers) {
+                val item = popup.menu.add(mediaServer.name)
+                mapping += item to mediaServer
+            }
+
+            popup.setOnMenuItemClickListener {
+                val intent = Intent(this, FileSystemActivity::class.java).apply {
+                    putExtra("connection_string", mapping[it]!!.connectionString)
+                    putExtra("path", "/")
+                }
+                startActivity(intent)
+                true
+            }
+
+            popup.show()
         }
     }
 
@@ -261,6 +297,8 @@ class RemoteControlActivity : AppCompatActivity() {
                 }
             }
         })
+
+        setUpOpenButton()
     }
 
     override fun onStart() {

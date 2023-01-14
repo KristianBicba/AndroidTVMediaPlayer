@@ -6,36 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".activity.FileSystemActivity">
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="73dp"
-        android:layout_height="65dp"
-        android:src="@drawable/back_svgrepo_com"
-        android:translationZ="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonBackFiles"
-        app:layout_constraintEnd_toEndOf="@+id/buttonBackFiles"
-        app:layout_constraintStart_toStartOf="@+id/buttonBackFiles"
-        app:layout_constraintTop_toTopOf="@+id/buttonBackFiles" />
-
-    <Button
-        android:id="@+id/buttonBackFiles"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:backgroundTint="#7E7E7E"
-        android:textSize="25sp"
-        android:translationZ="1dp"
-        app:cornerRadius="25dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/file_system_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewFiles" />
+        app:layout_constraintTop_toBottomOf="@+id/file_system_hbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFiles"
-        android:layout_width="409dp"
-        android:layout_height="600dp"
+    <TextView
+        android:id="@+id/file_system_text_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@android:color/primary_text_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="/movies/2022/something.mkv" />
+
+    <View
+        android:id="@+id/file_system_hbar"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/file_system_text_path" />
+
+    <TextView
+        android:id="@+id/file_system_text_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/file_system_hbar"
+        tools:text="Error: cannot show thing"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

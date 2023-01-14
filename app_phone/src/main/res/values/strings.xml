@@ -21,4 +21,6 @@
     <string name="edit_mediaserver_details_button_remove">Remove server</string>
     <string name="edit_mediaserver_details_hint_name">Name</string>
     <string name="remote_control_button_open">Open file</string>
+    <string name="file_system_error_open">This directory doesn\'t exist, or you don\'t have permission to access it</string>
+    <string name="file_system_error_closed">Error while requesting directory</string>
 </resources>

@@ -17,6 +17,7 @@ Once scanned, it might take several seconds for it to pair. Afterwards, the devi
 Right now, the app supports only SFTP fileservers. On the home screen, click the "Edit media servers" button and
 click the plus to add a server. Input a name (up to you) and a connection string in the format of
 `sftp://<username>:<password>@<ip>:<port>`.
+If you're running on the emulator with a server on localhost, the IP is 10.0.2.2.
 
 # Controlling a TV
 

@@ -5,7 +5,7 @@ whatever you send it (as long as that "whatever" is a sftp:// link in a BeginPla
 
 It displays a QR code on the main activity which you can scan with the companion app (`/app_phone/`) to pair with the
 device. All paired devices are displayed on the left side of the screen and can be disconnected by clicking OK on them.
-No, the connection isn't encrypted, I ran out of time for that.
+The connection isn't encrypted, I ran out of time for that.
 
 If you let it, this app can also abuse the accessibility API to run itself in the background indefinitely and launch the
 video player without requiring you to even touch the remote.
